@@ -25,6 +25,16 @@ from yt_dlp.utils import DownloadError
 app = Flask(__name__)
 app.config["MAX_CONTENT_LENGTH"] = 210 * 1024 * 1024  # ~200 MB upload cap + slack
 
+
+@app.after_request
+def _cors(resp):
+    # Let the Cloudflare Pages front-end (public/) call this backend cross-origin.
+    if request.path.startswith("/api/"):
+        resp.headers["Access-Control-Allow-Origin"] = "*"
+        resp.headers["Access-Control-Allow-Headers"] = "Content-Type"
+        resp.headers["Access-Control-Allow-Methods"] = "GET, POST, OPTIONS"
+    return resp
+
 HOST = os.environ.get("HOST", "0.0.0.0")
 PORT = int(os.environ.get("PORT", "5000"))
 MAX_UPLOAD_BYTES = 200 * 1024 * 1024
