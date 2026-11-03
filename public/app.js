@@ -1,5 +1,5 @@
 "use strict";
-const API_BASE = (localStorage.getItem("qs_api_base") || "").replace(/\/$/, "");
+const API_BASE = (localStorage.getItem("qs_api_base") || "https://quicksave-tgyk.onrender.com").replace(/\/$/, "");
 function api(path) { return API_BASE + path; }
 const $ = (s) => document.querySelector(s);
 const form = $("#resolve-form"), input = $("#url-input"), fetchBtn = $("#fetch-btn");
