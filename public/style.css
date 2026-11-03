@@ -64,3 +64,11 @@ details p{color:var(--muted);margin:.5rem 0 0}
 
 footer{text-align:center;color:var(--muted);font-size:.88rem;padding:2rem 1rem 2.5rem;border-top:1px solid var(--line);background:var(--card)}
 @media (max-width:560px){ .fetch-box{flex-direction:column;border-radius:var(--radius)} .fetch-box button{width:100%} }
+
+/* SEO pages */
+.answer{max-width:720px;margin:0 auto 18px;line-height:1.55}
+.crumbs{max-width:960px;margin:14px auto 0;padding:0 16px;font-size:.9rem;opacity:.85}
+.card-grid{display:flex;flex-wrap:wrap;gap:10px}
+.card-link{display:inline-block;padding:10px 16px;border:1px solid rgba(127,127,127,.35);border-radius:10px;text-decoration:none;font-weight:600}
+.card-link:hover{border-color:currentColor}
+footer a{color:inherit}

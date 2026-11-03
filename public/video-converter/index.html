@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Free Video Converter Online — MP4, MP3, WEBM, MOV, MKV, GIF | QuickSave</title>
+<meta name="description" content="Convert video & audio files free online: to MP3, MP4, WEBM, MOV, MKV or GIF. Up to 200 MB, no sign-up, no software to install.">
+<meta name="robots" content="index, follow">
+<link rel="canonical" href="https://quicksave.pages.dev/video-converter/">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="QuickSave">
+<meta property="og:title" content="Free Video Converter Online — MP4, MP3, WEBM, MOV, MKV, GIF | QuickSave">
+<meta property="og:description" content="Convert video & audio files free online: to MP3, MP4, WEBM, MOV, MKV or GIF. Up to 200 MB, no sign-up, no software to install.">
+<meta property="og:url" content="https://quicksave.pages.dev/video-converter/">
+<meta property="og:image" content="https://quicksave.pages.dev/download.svg">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Free Video Converter Online — MP4, MP3, WEBM, MOV, MKV, GIF | QuickSave">
+<meta name="twitter:description" content="Convert video & audio files free online: to MP3, MP4, WEBM, MOV, MKV or GIF. Up to 200 MB, no sign-up, no software to install.">
+<link rel="stylesheet" href="/style.css">
+<link rel="icon" type="image/svg+xml" href="/download.svg">
+<script type="application/ld+json">
+{
+ "@context": "https://schema.org",
+ "@graph": [
+  {
+   "@type": "WebApplication",
+   "name": "QuickSave \u2014 Free Video Converter",
+   "url": "https://quicksave.pages.dev/video-converter/",
+   "description": "Free online file converter for MP3, MP4, WEBM, MOV, MKV and GIF.",
+   "applicationCategory": "MultimediaApplication",
+   "operatingSystem": "Any (web browser)",
+   "browserRequirements": "Requires JavaScript",
+   "offers": {
+    "@type": "Offer",
+    "price": "0",
+    "priceCurrency": "USD"
+   }
+  },
+  {
+   "@type": "BreadcrumbList",
+   "itemListElement": [
+    {
+     "@type": "ListItem",
+     "position": 1,
+     "name": "QuickSave",
+     "item": "https://quicksave.pages.dev/"
+    },
+    {
+     "@type": "ListItem",
+     "position": 2,
+     "name": "Video Converter",
+     "item": "https://quicksave.pages.dev/video-converter/"
+    }
+   ]
+  },
+  {
+   "@type": "FAQPage",
+   "mainEntity": [
+    {
+     "@type": "Question",
+     "name": "Which formats can I convert between?",
+     "acceptedAnswer": {
+      "@type": "Answer",
+      "text": "QuickSave converts video and audio files to MP3, MP4, WEBM, MOV, MKV and animated GIF. Upload almost any common media file \u2014 MP4, WEBM, MOV, MKV, MP3, WAV and more."
+     }
+    },
+    {
+     "@type": "Question",
+     "name": "What is the maximum file size?",
+     "acceptedAnswer": {
+      "@type": "Answer",
+      "text": "Files up to 200 MB can be converted for free."
+     }
+    },
+    {
+     "@type": "Question",
+     "name": "How do I turn a video into a GIF?",
+     "acceptedAnswer": {
+      "@type": "Answer",
+      "text": "Upload the video, choose GIF as the target format, and download the animated result \u2014 trimmed to a shareable size and frame rate automatically."
+     }
+    },
+    {
+     "@type": "Question",
+     "name": "Is my file uploaded anywhere permanent?",
+     "acceptedAnswer": {
+      "@type": "Answer",
+      "text": "No. Your file is processed for the conversion and then deleted; nothing is stored or shared."
+     }
+    }
+   ]
+  }
+ ]
+}
+</script>
+</head>
+<body>
+<header class="site-header">
+  <a class="logo" href="/"><img class="logo-icon" src="/download.svg" alt="QuickSave logo">Quick<span>Save</span></a>
+  <nav>
+    <a href="/youtube-video-downloader/">YouTube</a>
+    <a href="/facebook-video-downloader/">Facebook</a>
+    <a href="/instagram-video-downloader/">Instagram</a>
+    <a href="/tiktok-video-downloader/">TikTok</a>
+    <a href="/youtube-to-mp3/">YouTube to MP3</a>
+    <a href="/video-converter/">Converter</a>
+  </nav>
+</header>
+<main>
+
+  <nav class="crumbs"><a href="/">QuickSave</a> › Video Converter</nav>
+  <section class="hero">
+    <h1>Free Online Video Converter — MP4, MP3, WEBM, MOV, MKV &amp; GIF</h1>
+    <p class="answer"><strong>QuickSave's file converter changes video and audio files between formats, free and online.</strong> Upload a file (up to 200 MB), pick MP3, MP4, WEBM, MOV, MKV or animated GIF, and download the converted file — no software to install and no sign-up.</p>
+  </section>
+
+  <section id="converter" class="panel">
+    <h2>Convert a file</h2>
+    <div id="drop-zone" class="drop-zone">
+      <p>Drag &amp; drop a file here, or</p>
+      <label class="file-pick">Choose file <input type="file" id="convert-file" hidden></label>
+      <p id="convert-name" class="file-name"></p>
+    </div>
+    <div class="convert-row">
+      <label>Convert to
+        <select id="convert-target">
+          <option value="mp3">MP3 (audio)</option>
+          <option value="mp4" selected>MP4 (video)</option>
+          <option value="webm">WEBM</option>
+          <option value="mov">MOV</option>
+          <option value="mkv">MKV</option>
+          <option value="gif">GIF (animated)</option>
+        </select>
+      </label>
+      <button id="convert-btn" class="primary">Convert &amp; Download</button>
+    </div>
+    <div id="convert-status" class="status" hidden></div>
+  </section>
+
+  <section class="panel">
+    <h2>Popular conversions</h2>
+    <div class="steps">
+      <div class="step"><strong>Video to MP3</strong><p>Extract the audio track from any video and save it as a music-ready MP3.</p></div>
+      <div class="step"><strong>MP4 to WEBM</strong><p>Shrink videos for the web with the efficient WEBM format.</p></div>
+      <div class="step"><strong>Video to GIF</strong><p>Turn a clip into a looping animated GIF for chats and social posts.</p></div>
+      <div class="step"><strong>MOV to MP4</strong><p>Make iPhone and camera MOV files play everywhere as MP4.</p></div>
+    </div>
+  </section>
+
+  <section class="panel">
+    <h2>Downloading instead?</h2>
+    <div class="card-grid">
+      <a class="card-link" href="/">All-in-one Video Downloader</a>
+      <a class="card-link" href="/youtube-video-downloader/">YouTube</a>
+      <a class="card-link" href="/facebook-video-downloader/">Facebook</a>
+      <a class="card-link" href="/instagram-video-downloader/">Instagram</a>
+      <a class="card-link" href="/tiktok-video-downloader/">TikTok</a>
+      <a class="card-link" href="/youtube-to-mp3/">YouTube to MP3</a>
+    </div>
+  </section>
+
+  <section id="faq" class="panel">
+    <h2>Converter — frequently asked questions</h2>
+    <details><summary>Which formats can I convert between?</summary><p>QuickSave converts video and audio files to MP3, MP4, WEBM, MOV, MKV and animated GIF. Upload almost any common media file — MP4, WEBM, MOV, MKV, MP3, WAV and more.</p></details>
+    <details><summary>What is the maximum file size?</summary><p>Files up to 200 MB can be converted for free.</p></details>
+    <details><summary>How do I turn a video into a GIF?</summary><p>Upload the video, choose GIF as the target format, and download the animated result — trimmed to a shareable size and frame rate automatically.</p></details>
+    <details><summary>Is my file uploaded anywhere permanent?</summary><p>No. Your file is processed for the conversion and then deleted; nothing is stored or shared.</p></details>
+  </section>
+</main>
+<footer>
+  <p><a href="/">Video Downloader</a> · <a href="/youtube-video-downloader/">YouTube</a> · <a href="/facebook-video-downloader/">Facebook</a> · <a href="/instagram-video-downloader/">Instagram</a> · <a href="/tiktok-video-downloader/">TikTok</a> · <a href="/youtube-to-mp3/">YouTube to MP3</a> · <a href="/video-converter/">Converter</a></p>
+  <p><strong>QuickSave</strong> — free online video downloader &amp; converter. No sign-up, no installs.</p>
+  <p>Only download content you own or have permission to save. Respect each platform's terms and creators' rights.</p>
+  <p>© 2026 QuickSave</p>
+</footer>
+<script src="/app.js"></script>
+</body>
+</html>

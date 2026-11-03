@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>YouTube to MP3 Converter — Free &amp; Fast, High-Quality Audio | QuickSave</title>
+<meta name="description" content="Convert YouTube videos to MP3 free. Paste a link, download high-quality audio in seconds. Works for music, podcasts & Shorts. No sign-up.">
+<meta name="robots" content="index, follow">
+<link rel="canonical" href="https://quicksave.pages.dev/youtube-to-mp3/">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="QuickSave">
+<meta property="og:title" content="YouTube to MP3 Converter — Free &amp; Fast, High-Quality Audio | QuickSave">
+<meta property="og:description" content="Convert YouTube videos to MP3 free. Paste a link, download high-quality audio in seconds. Works for music, podcasts & Shorts. No sign-up.">
+<meta property="og:url" content="https://quicksave.pages.dev/youtube-to-mp3/">
+<meta property="og:image" content="https://quicksave.pages.dev/download.svg">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="YouTube to MP3 Converter — Free &amp; Fast, High-Quality Audio | QuickSave">
+<meta name="twitter:description" content="Convert YouTube videos to MP3 free. Paste a link, download high-quality audio in seconds. Works for music, podcasts & Shorts. No sign-up.">
+<link rel="stylesheet" href="/style.css">
+<link rel="icon" type="image/svg+xml" href="/download.svg">
+<script type="application/ld+json">
+{
+ "@context": "https://schema.org",
+ "@graph": [
+  {
+   "@type": "WebApplication",
+   "name": "QuickSave \u2014 YouTube to MP3 Converter",
+   "url": "https://quicksave.pages.dev/youtube-to-mp3/",
+   "description": "Convert YouTube videos to MP3 free. Paste a link, download high-quality audio in seconds. Works for music, podcasts & Shorts. No sign-up.",
+   "applicationCategory": "MultimediaApplication",
+   "operatingSystem": "Any (web browser)",
+   "browserRequirements": "Requires JavaScript",
+   "offers": {
+    "@type": "Offer",
+    "price": "0",
+    "priceCurrency": "USD"
+   }
+  },
+  {
+   "@type": "BreadcrumbList",
+   "itemListElement": [
+    {
+     "@type": "ListItem",
+     "position": 1,
+     "name": "QuickSave",
+     "item": "https://quicksave.pages.dev/"
+    },
+    {
+     "@type": "ListItem",
+     "position": 2,
+     "name": "YouTube to MP3 Converter",
+     "item": "https://quicksave.pages.dev/youtube-to-mp3/"
+    }
+   ]
+  },
+  {
+   "@type": "FAQPage",
+   "mainEntity": [
+    {
+     "@type": "Question",
+     "name": "Is the YouTube to MP3 converter free?",
+     "acceptedAnswer": {
+      "@type": "Answer",
+      "text": "Yes, completely \u2014 no limits, no account, no watermarks."
+     }
+    },
+    {
+     "@type": "Question",
+     "name": "What quality is the MP3?",
+     "acceptedAnswer": {
+      "@type": "Answer",
+      "text": "QuickSave converts from the best available audio stream to a 192 kbps MP3, which is transparent quality for nearly all listening."
+     }
+    },
+    {
+     "@type": "Question",
+     "name": "Can I convert YouTube Shorts to MP3?",
+     "acceptedAnswer": {
+      "@type": "Answer",
+      "text": "Yes. Shorts links work exactly like regular videos."
+     }
+    },
+    {
+     "@type": "Question",
+     "name": "How long can the video be?",
+     "acceptedAnswer": {
+      "@type": "Answer",
+      "text": "There is no fixed length limit; very long videos simply take a little longer to process."
+     }
+    }
+   ]
+  }
+ ]
+}
+</script>
+</head>
+<body>
+<header class="site-header">
+  <a class="logo" href="/"><img class="logo-icon" src="/download.svg" alt="QuickSave logo">Quick<span>Save</span></a>
+  <nav>
+    <a href="/youtube-video-downloader/">YouTube</a>
+    <a href="/facebook-video-downloader/">Facebook</a>
+    <a href="/instagram-video-downloader/">Instagram</a>
+    <a href="/tiktok-video-downloader/">TikTok</a>
+    <a href="/youtube-to-mp3/">YouTube to MP3</a>
+    <a href="/video-converter/">Converter</a>
+  </nav>
+</header>
+<main>
+
+  <nav class="crumbs"><a href="/">QuickSave</a> › YouTube to MP3 Converter</nav>
+  <section class="hero">
+    <h1>YouTube to MP3 Converter</h1>
+    <p class="answer">QuickSave's YouTube to MP3 converter extracts the audio from any public YouTube video and saves it as an MP3 file — free, in seconds, with no sign-up. Paste the video link, press Download, choose Audio only (MP3), and the soundtrack — music, podcast, lecture or Short — downloads at high quality, ready for any music player.</p>
+    <form id="resolve-form" class="fetch-box">
+      <input type="url" id="url-input" placeholder="Paste a YouTube link to convert to MP3…" autocomplete="off" spellcheck="false" required>
+      <button type="submit" id="fetch-btn">Download</button>
+    </form>
+    <div id="status" class="status" hidden></div>
+    <p class="micro">Free · No sign-up · Works on phone &amp; computer · Only download content you have the right to save.</p>
+  </section>
+
+  <section id="result" class="result" hidden>
+    <div class="result-card">
+      <img id="r-thumb" alt="Video thumbnail">
+      <div class="result-meta">
+        <h2 id="r-title"></h2>
+        <p><span id="r-uploader"></span> · <span id="r-duration"></span> · via <span id="r-platform"></span></p>
+        <div class="quick-actions">
+          <button class="dl-btn best" data-format="best_mp4">⬇ Best quality MP4</button>
+          <button class="dl-btn audio" data-format="mp3">🎵 Audio only (MP3)</button>
+        </div>
+      </div>
+    </div>
+    <h3>Video</h3>
+    <div id="formats-video" class="format-grid"></div>
+    <h3>Audio</h3>
+    <div id="formats-audio" class="format-grid"></div>
+  </section>
+
+  <section class="panel">
+    <h2>How to download from YouTube to MP3</h2>
+    <div class="steps">
+      <div class="step"><strong>1. Copy the YouTube link</strong><p>Find the song, podcast or video on YouTube and copy its URL or Share link.</p></div>
+      <div class="step"><strong>2. Paste it above</strong><p>Paste the link into QuickSave and press Download.</p></div>
+      <div class="step"><strong>3. Choose Audio only (MP3)</strong><p>Pick the MP3 option and QuickSave extracts and converts the audio for you.</p></div>
+      <div class="step"><strong>4. Save your MP3</strong><p>The file downloads with the video's title — drop it into any player or playlist.</p></div>
+      </div>
+  </section>
+
+  <section class="panel">
+    <h2>YouTube to MP3 downloads, done right</h2>
+    <div class="steps">
+      <div class="step"><strong>High-quality audio</strong><p>Audio is extracted from the best source stream and encoded at 192 kbps MP3.</p></div>
+      <div class="step"><strong>Podcasts & lectures too</strong><p>Long-form audio works the same as songs — one link, one MP3.</p></div>
+      <div class="step"><strong>No software</strong><p>The whole conversion happens online; nothing to install.</p></div>
+    </div>
+  </section>
+
+  <section class="panel">
+    <h2>More downloaders</h2>
+    <div class="card-grid">
+      <a class="card-link" href="/">All-in-one Video Downloader</a>
+      <a class="card-link" href="/youtube-video-downloader/">YouTube</a>
+      <a class="card-link" href="/facebook-video-downloader/">Facebook</a>
+      <a class="card-link" href="/instagram-video-downloader/">Instagram</a>
+      <a class="card-link" href="/tiktok-video-downloader/">TikTok</a>
+      <a class="card-link" href="/video-converter/">Converter</a>
+    </div>
+  </section>
+
+  <section id="faq" class="panel">
+    <h2>YouTube to MP3 downloader — frequently asked questions</h2>
+    <details><summary>Is the YouTube to MP3 converter free?</summary><p>Yes, completely — no limits, no account, no watermarks.</p></details>
+    <details><summary>What quality is the MP3?</summary><p>QuickSave converts from the best available audio stream to a 192 kbps MP3, which is transparent quality for nearly all listening.</p></details>
+    <details><summary>Can I convert YouTube Shorts to MP3?</summary><p>Yes. Shorts links work exactly like regular videos.</p></details>
+    <details><summary>How long can the video be?</summary><p>There is no fixed length limit; very long videos simply take a little longer to process.</p></details>
+  </section>
+</main>
+<footer>
+  <p><a href="/">Video Downloader</a> · <a href="/youtube-video-downloader/">YouTube</a> · <a href="/facebook-video-downloader/">Facebook</a> · <a href="/instagram-video-downloader/">Instagram</a> · <a href="/tiktok-video-downloader/">TikTok</a> · <a href="/youtube-to-mp3/">YouTube to MP3</a> · <a href="/video-converter/">Converter</a></p>
+  <p><strong>QuickSave</strong> — free online video downloader &amp; converter. No sign-up, no installs.</p>
+  <p>Only download content you own or have permission to save. Respect each platform's terms and creators' rights.</p>
+  <p>© 2026 QuickSave</p>
+</footer>
+<script src="/app.js"></script>
+</body>
+</html>

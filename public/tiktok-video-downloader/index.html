@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TikTok Video Downloader — Save TikTok Videos Free in HD | QuickSave</title>
+<meta name="description" content="Download TikTok videos free in HD MP4, or save the sound as MP3. Paste the TikTok link and download on phone or PC. No sign-up needed.">
+<meta name="robots" content="index, follow">
+<link rel="canonical" href="https://quicksave.pages.dev/tiktok-video-downloader/">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="QuickSave">
+<meta property="og:title" content="TikTok Video Downloader — Save TikTok Videos Free in HD | QuickSave">
+<meta property="og:description" content="Download TikTok videos free in HD MP4, or save the sound as MP3. Paste the TikTok link and download on phone or PC. No sign-up needed.">
+<meta property="og:url" content="https://quicksave.pages.dev/tiktok-video-downloader/">
+<meta property="og:image" content="https://quicksave.pages.dev/download.svg">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="TikTok Video Downloader — Save TikTok Videos Free in HD | QuickSave">
+<meta name="twitter:description" content="Download TikTok videos free in HD MP4, or save the sound as MP3. Paste the TikTok link and download on phone or PC. No sign-up needed.">
+<link rel="stylesheet" href="/style.css">
+<link rel="icon" type="image/svg+xml" href="/download.svg">
+<script type="application/ld+json">
+{
+ "@context": "https://schema.org",
+ "@graph": [
+  {
+   "@type": "WebApplication",
+   "name": "QuickSave \u2014 TikTok Video Downloader",
+   "url": "https://quicksave.pages.dev/tiktok-video-downloader/",
+   "description": "Download TikTok videos free in HD MP4, or save the sound as MP3. Paste the TikTok link and download on phone or PC. No sign-up needed.",
+   "applicationCategory": "MultimediaApplication",
+   "operatingSystem": "Any (web browser)",
+   "browserRequirements": "Requires JavaScript",
+   "offers": {
+    "@type": "Offer",
+    "price": "0",
+    "priceCurrency": "USD"
+   }
+  },
+  {
+   "@type": "BreadcrumbList",
+   "itemListElement": [
+    {
+     "@type": "ListItem",
+     "position": 1,
+     "name": "QuickSave",
+     "item": "https://quicksave.pages.dev/"
+    },
+    {
+     "@type": "ListItem",
+     "position": 2,
+     "name": "TikTok Video Downloader",
+     "item": "https://quicksave.pages.dev/tiktok-video-downloader/"
+    }
+   ]
+  },
+  {
+   "@type": "FAQPage",
+   "mainEntity": [
+    {
+     "@type": "Question",
+     "name": "Is the TikTok downloader free?",
+     "acceptedAnswer": {
+      "@type": "Answer",
+      "text": "Yes \u2014 unlimited downloads, no account and no payment."
+     }
+    },
+    {
+     "@type": "Question",
+     "name": "Can I download a TikTok sound only?",
+     "acceptedAnswer": {
+      "@type": "Answer",
+      "text": "Yes. After pasting the link, choose \u201cAudio only (MP3)\u201d to save the sound on its own."
+     }
+    },
+    {
+     "@type": "Question",
+     "name": "Why won't my TikTok link load?",
+     "acceptedAnswer": {
+      "@type": "Answer",
+      "text": "The video may be private, deleted or region-locked. Check it opens in your browser, then try again."
+     }
+    },
+    {
+     "@type": "Question",
+     "name": "Does QuickSave work for TikTok on iPhone?",
+     "acceptedAnswer": {
+      "@type": "Answer",
+      "text": "Yes. It runs in Safari or any iPhone browser; the MP4 saves to your Files/Downloads like any other download."
+     }
+    }
+   ]
+  }
+ ]
+}
+</script>
+</head>
+<body>
+<header class="site-header">
+  <a class="logo" href="/"><img class="logo-icon" src="/download.svg" alt="QuickSave logo">Quick<span>Save</span></a>
+  <nav>
+    <a href="/youtube-video-downloader/">YouTube</a>
+    <a href="/facebook-video-downloader/">Facebook</a>
+    <a href="/instagram-video-downloader/">Instagram</a>
+    <a href="/tiktok-video-downloader/">TikTok</a>
+    <a href="/youtube-to-mp3/">YouTube to MP3</a>
+    <a href="/video-converter/">Converter</a>
+  </nav>
+</header>
+<main>
+
+  <nav class="crumbs"><a href="/">QuickSave</a> › TikTok Video Downloader</nav>
+  <section class="hero">
+    <h1>TikTok Video Downloader</h1>
+    <p class="answer">QuickSave's TikTok video downloader saves TikTok videos as HD MP4 files, free, from any browser. Paste the TikTok link, press Download, and save the video — or extract just the trending sound as an MP3. No sign-up, no app install, works on Android, iPhone and desktop.</p>
+    <form id="resolve-form" class="fetch-box">
+      <input type="url" id="url-input" placeholder="Paste a TikTok link…" autocomplete="off" spellcheck="false" required>
+      <button type="submit" id="fetch-btn">Download</button>
+    </form>
+    <div id="status" class="status" hidden></div>
+    <p class="micro">Free · No sign-up · Works on phone &amp; computer · Only download content you have the right to save.</p>
+  </section>
+
+  <section id="result" class="result" hidden>
+    <div class="result-card">
+      <img id="r-thumb" alt="Video thumbnail">
+      <div class="result-meta">
+        <h2 id="r-title"></h2>
+        <p><span id="r-uploader"></span> · <span id="r-duration"></span> · via <span id="r-platform"></span></p>
+        <div class="quick-actions">
+          <button class="dl-btn best" data-format="best_mp4">⬇ Best quality MP4</button>
+          <button class="dl-btn audio" data-format="mp3">🎵 Audio only (MP3)</button>
+        </div>
+      </div>
+    </div>
+    <h3>Video</h3>
+    <div id="formats-video" class="format-grid"></div>
+    <h3>Audio</h3>
+    <div id="formats-audio" class="format-grid"></div>
+  </section>
+
+  <section class="panel">
+    <h2>How to download from TikTok</h2>
+    <div class="steps">
+      <div class="step"><strong>1. Copy the TikTok link</strong><p>In the TikTok app tap Share → Copy link, or copy the video's URL from your browser's address bar.</p></div>
+      <div class="step"><strong>2. Paste it above</strong><p>Paste the link into QuickSave and press Download to see the available formats.</p></div>
+      <div class="step"><strong>3. Download MP4 or MP3</strong><p>Save the full video as MP4, or choose Audio only (MP3) to keep just the sound.</p></div>
+      <div class="step"><strong>4. Watch or reuse offline</strong><p>The file is yours to keep on your device and plays in any player.</p></div>
+      </div>
+  </section>
+
+  <section class="panel">
+    <h2>TikTok downloads, done right</h2>
+    <div class="steps">
+      <div class="step"><strong>HD quality</strong><p>Downloads the best quality TikTok serves for the video.</p></div>
+      <div class="step"><strong>Sound extraction</strong><p>Trending audio and music clips save directly as MP3.</p></div>
+      <div class="step"><strong>Fast on mobile</strong><p>Small pages and direct downloads keep it quick on phone data.</p></div>
+    </div>
+  </section>
+
+  <section class="panel">
+    <h2>More downloaders</h2>
+    <div class="card-grid">
+      <a class="card-link" href="/">All-in-one Video Downloader</a>
+      <a class="card-link" href="/youtube-video-downloader/">YouTube</a>
+      <a class="card-link" href="/facebook-video-downloader/">Facebook</a>
+      <a class="card-link" href="/instagram-video-downloader/">Instagram</a>
+      <a class="card-link" href="/youtube-to-mp3/">YouTube to MP3</a>
+      <a class="card-link" href="/video-converter/">Converter</a>
+    </div>
+  </section>
+
+  <section id="faq" class="panel">
+    <h2>TikTok downloader — frequently asked questions</h2>
+    <details><summary>Is the TikTok downloader free?</summary><p>Yes — unlimited downloads, no account and no payment.</p></details>
+    <details><summary>Can I download a TikTok sound only?</summary><p>Yes. After pasting the link, choose “Audio only (MP3)” to save the sound on its own.</p></details>
+    <details><summary>Why won't my TikTok link load?</summary><p>The video may be private, deleted or region-locked. Check it opens in your browser, then try again.</p></details>
+    <details><summary>Does QuickSave work for TikTok on iPhone?</summary><p>Yes. It runs in Safari or any iPhone browser; the MP4 saves to your Files/Downloads like any other download.</p></details>
+  </section>
+</main>
+<footer>
+  <p><a href="/">Video Downloader</a> · <a href="/youtube-video-downloader/">YouTube</a> · <a href="/facebook-video-downloader/">Facebook</a> · <a href="/instagram-video-downloader/">Instagram</a> · <a href="/tiktok-video-downloader/">TikTok</a> · <a href="/youtube-to-mp3/">YouTube to MP3</a> · <a href="/video-converter/">Converter</a></p>
+  <p><strong>QuickSave</strong> — free online video downloader &amp; converter. No sign-up, no installs.</p>
+  <p>Only download content you own or have permission to save. Respect each platform's terms and creators' rights.</p>
+  <p>© 2026 QuickSave</p>
+</footer>
+<script src="/app.js"></script>
+</body>
+</html>

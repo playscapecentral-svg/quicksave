@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Facebook Video Downloader — Save FB Videos in HD Free | QuickSave</title>
+<meta name="description" content="Download Facebook videos & Reels free in HD or SD MP4. Paste the FB link, pick a quality, save to any device. No sign-up, no app needed.">
+<meta name="robots" content="index, follow">
+<link rel="canonical" href="https://quicksave.pages.dev/facebook-video-downloader/">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="QuickSave">
+<meta property="og:title" content="Facebook Video Downloader — Save FB Videos in HD Free | QuickSave">
+<meta property="og:description" content="Download Facebook videos & Reels free in HD or SD MP4. Paste the FB link, pick a quality, save to any device. No sign-up, no app needed.">
+<meta property="og:url" content="https://quicksave.pages.dev/facebook-video-downloader/">
+<meta property="og:image" content="https://quicksave.pages.dev/download.svg">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Facebook Video Downloader — Save FB Videos in HD Free | QuickSave">
+<meta name="twitter:description" content="Download Facebook videos & Reels free in HD or SD MP4. Paste the FB link, pick a quality, save to any device. No sign-up, no app needed.">
+<link rel="stylesheet" href="/style.css">
+<link rel="icon" type="image/svg+xml" href="/download.svg">
+<script type="application/ld+json">
+{
+ "@context": "https://schema.org",
+ "@graph": [
+  {
+   "@type": "WebApplication",
+   "name": "QuickSave \u2014 Facebook Video Downloader",
+   "url": "https://quicksave.pages.dev/facebook-video-downloader/",
+   "description": "Download Facebook videos & Reels free in HD or SD MP4. Paste the FB link, pick a quality, save to any device. No sign-up, no app needed.",
+   "applicationCategory": "MultimediaApplication",
+   "operatingSystem": "Any (web browser)",
+   "browserRequirements": "Requires JavaScript",
+   "offers": {
+    "@type": "Offer",
+    "price": "0",
+    "priceCurrency": "USD"
+   }
+  },
+  {
+   "@type": "BreadcrumbList",
+   "itemListElement": [
+    {
+     "@type": "ListItem",
+     "position": 1,
+     "name": "QuickSave",
+     "item": "https://quicksave.pages.dev/"
+    },
+    {
+     "@type": "ListItem",
+     "position": 2,
+     "name": "Facebook Video Downloader",
+     "item": "https://quicksave.pages.dev/facebook-video-downloader/"
+    }
+   ]
+  },
+  {
+   "@type": "FAQPage",
+   "mainEntity": [
+    {
+     "@type": "Question",
+     "name": "Can I download private Facebook videos?",
+     "acceptedAnswer": {
+      "@type": "Answer",
+      "text": "No. QuickSave can only save videos that are public. Videos shared to friends-only audiences or private groups cannot be fetched."
+     }
+    },
+    {
+     "@type": "Question",
+     "name": "Do Facebook Reels work?",
+     "acceptedAnswer": {
+      "@type": "Answer",
+      "text": "Yes \u2014 paste the Reel's share link and download it as an MP4, same as a regular video."
+     }
+    },
+    {
+     "@type": "Question",
+     "name": "Why is there no HD option for my video?",
+     "acceptedAnswer": {
+      "@type": "Answer",
+      "text": "HD appears only when the original upload was HD. If the uploader posted in SD, SD is the best quality that exists."
+     }
+    },
+    {
+     "@type": "Question",
+     "name": "Can I save just the audio from a Facebook video?",
+     "acceptedAnswer": {
+      "@type": "Answer",
+      "text": "Yes. Choose \u201cAudio only (MP3)\u201d after the formats load to extract the soundtrack."
+     }
+    }
+   ]
+  }
+ ]
+}
+</script>
+</head>
+<body>
+<header class="site-header">
+  <a class="logo" href="/"><img class="logo-icon" src="/download.svg" alt="QuickSave logo">Quick<span>Save</span></a>
+  <nav>
+    <a href="/youtube-video-downloader/">YouTube</a>
+    <a href="/facebook-video-downloader/">Facebook</a>
+    <a href="/instagram-video-downloader/">Instagram</a>
+    <a href="/tiktok-video-downloader/">TikTok</a>
+    <a href="/youtube-to-mp3/">YouTube to MP3</a>
+    <a href="/video-converter/">Converter</a>
+  </nav>
+</header>
+<main>
+
+  <nav class="crumbs"><a href="/">QuickSave</a> › Facebook Video Downloader</nav>
+  <section class="hero">
+    <h1>Facebook Video Downloader</h1>
+    <p class="answer">QuickSave's Facebook video downloader saves public Facebook videos and Reels as MP4 files, free and without installing anything. Paste the Facebook video link, press Download, and choose HD or SD quality. It works in the browser on Android, iPhone and computer — no Facebook app and no sign-up required.</p>
+    <form id="resolve-form" class="fetch-box">
+      <input type="url" id="url-input" placeholder="Paste a Facebook video link…" autocomplete="off" spellcheck="false" required>
+      <button type="submit" id="fetch-btn">Download</button>
+    </form>
+    <div id="status" class="status" hidden></div>
+    <p class="micro">Free · No sign-up · Works on phone &amp; computer · Only download content you have the right to save.</p>
+  </section>
+
+  <section id="result" class="result" hidden>
+    <div class="result-card">
+      <img id="r-thumb" alt="Video thumbnail">
+      <div class="result-meta">
+        <h2 id="r-title"></h2>
+        <p><span id="r-uploader"></span> · <span id="r-duration"></span> · via <span id="r-platform"></span></p>
+        <div class="quick-actions">
+          <button class="dl-btn best" data-format="best_mp4">⬇ Best quality MP4</button>
+          <button class="dl-btn audio" data-format="mp3">🎵 Audio only (MP3)</button>
+        </div>
+      </div>
+    </div>
+    <h3>Video</h3>
+    <div id="formats-video" class="format-grid"></div>
+    <h3>Audio</h3>
+    <div id="formats-audio" class="format-grid"></div>
+  </section>
+
+  <section class="panel">
+    <h2>How to download from Facebook</h2>
+    <div class="steps">
+      <div class="step"><strong>1. Copy the Facebook link</strong><p>Open the video or Reel on Facebook, tap Share → Copy link (or copy the address-bar URL on desktop).</p></div>
+      <div class="step"><strong>2. Paste it above</strong><p>Paste the link into QuickSave and press Download to load the available qualities.</p></div>
+      <div class="step"><strong>3. Pick HD or SD</strong><p>Choose HD for the clearest picture or SD for a smaller, faster download.</p></div>
+      <div class="step"><strong>4. Save the MP4</strong><p>The video downloads as a standard MP4 that plays anywhere.</p></div>
+      </div>
+  </section>
+
+  <section class="panel">
+    <h2>Facebook downloads, done right</h2>
+    <div class="steps">
+      <div class="step"><strong>Reels supported</strong><p>Facebook Reels download with the same one-link flow as regular videos.</p></div>
+      <div class="step"><strong>HD when available</strong><p>If the uploader posted in HD, QuickSave offers the HD version alongside SD.</p></div>
+      <div class="step"><strong>No app needed</strong><p>Everything happens in your browser — nothing to install on your phone.</p></div>
+    </div>
+  </section>
+
+  <section class="panel">
+    <h2>More downloaders</h2>
+    <div class="card-grid">
+      <a class="card-link" href="/">All-in-one Video Downloader</a>
+      <a class="card-link" href="/youtube-video-downloader/">YouTube</a>
+      <a class="card-link" href="/instagram-video-downloader/">Instagram</a>
+      <a class="card-link" href="/tiktok-video-downloader/">TikTok</a>
+      <a class="card-link" href="/youtube-to-mp3/">YouTube to MP3</a>
+      <a class="card-link" href="/video-converter/">Converter</a>
+    </div>
+  </section>
+
+  <section id="faq" class="panel">
+    <h2>Facebook downloader — frequently asked questions</h2>
+    <details><summary>Can I download private Facebook videos?</summary><p>No. QuickSave can only save videos that are public. Videos shared to friends-only audiences or private groups cannot be fetched.</p></details>
+    <details><summary>Do Facebook Reels work?</summary><p>Yes — paste the Reel's share link and download it as an MP4, same as a regular video.</p></details>
+    <details><summary>Why is there no HD option for my video?</summary><p>HD appears only when the original upload was HD. If the uploader posted in SD, SD is the best quality that exists.</p></details>
+    <details><summary>Can I save just the audio from a Facebook video?</summary><p>Yes. Choose “Audio only (MP3)” after the formats load to extract the soundtrack.</p></details>
+  </section>
+</main>
+<footer>
+  <p><a href="/">Video Downloader</a> · <a href="/youtube-video-downloader/">YouTube</a> · <a href="/facebook-video-downloader/">Facebook</a> · <a href="/instagram-video-downloader/">Instagram</a> · <a href="/tiktok-video-downloader/">TikTok</a> · <a href="/youtube-to-mp3/">YouTube to MP3</a> · <a href="/video-converter/">Converter</a></p>
+  <p><strong>QuickSave</strong> — free online video downloader &amp; converter. No sign-up, no installs.</p>
+  <p>Only download content you own or have permission to save. Respect each platform's terms and creators' rights.</p>
+  <p>© 2026 QuickSave</p>
+</footer>
+<script src="/app.js"></script>
+</body>
+</html>

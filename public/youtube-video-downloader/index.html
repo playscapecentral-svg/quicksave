@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>YouTube Video Downloader — Free HD & 4K, No Sign-Up | QuickSave</title>
+<meta name="description" content="Download YouTube videos free in HD, 1080p, 1440p & 4K MP4, or save Shorts and music as MP3. No sign-up, no watermark, works on any device.">
+<meta name="robots" content="index, follow">
+<link rel="canonical" href="https://quicksave.pages.dev/youtube-video-downloader/">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="QuickSave">
+<meta property="og:title" content="YouTube Video Downloader — Free HD & 4K, No Sign-Up | QuickSave">
+<meta property="og:description" content="Download YouTube videos free in HD, 1080p, 1440p & 4K MP4, or save Shorts and music as MP3. No sign-up, no watermark, works on any device.">
+<meta property="og:url" content="https://quicksave.pages.dev/youtube-video-downloader/">
+<meta property="og:image" content="https://quicksave.pages.dev/download.svg">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="YouTube Video Downloader — Free HD & 4K, No Sign-Up | QuickSave">
+<meta name="twitter:description" content="Download YouTube videos free in HD, 1080p, 1440p & 4K MP4, or save Shorts and music as MP3. No sign-up, no watermark, works on any device.">
+<link rel="stylesheet" href="/style.css">
+<link rel="icon" type="image/svg+xml" href="/download.svg">
+<script type="application/ld+json">
+{
+ "@context": "https://schema.org",
+ "@graph": [
+  {
+   "@type": "WebApplication",
+   "name": "QuickSave \u2014 YouTube Video Downloader",
+   "url": "https://quicksave.pages.dev/youtube-video-downloader/",
+   "description": "Download YouTube videos free in HD, 1080p, 1440p & 4K MP4, or save Shorts and music as MP3. No sign-up, no watermark, works on any device.",
+   "applicationCategory": "MultimediaApplication",
+   "operatingSystem": "Any (web browser)",
+   "browserRequirements": "Requires JavaScript",
+   "offers": {
+    "@type": "Offer",
+    "price": "0",
+    "priceCurrency": "USD"
+   }
+  },
+  {
+   "@type": "BreadcrumbList",
+   "itemListElement": [
+    {
+     "@type": "ListItem",
+     "position": 1,
+     "name": "QuickSave",
+     "item": "https://quicksave.pages.dev/"
+    },
+    {
+     "@type": "ListItem",
+     "position": 2,
+     "name": "YouTube Video Downloader",
+     "item": "https://quicksave.pages.dev/youtube-video-downloader/"
+    }
+   ]
+  },
+  {
+   "@type": "FAQPage",
+   "mainEntity": [
+    {
+     "@type": "Question",
+     "name": "Can I download YouTube Shorts?",
+     "acceptedAnswer": {
+      "@type": "Answer",
+      "text": "Yes. Paste the Shorts link into the box above exactly like a normal video link, then choose MP4 or MP3."
+     }
+    },
+    {
+     "@type": "Question",
+     "name": "Why do some downloaders give silent 1080p files?",
+     "acceptedAnswer": {
+      "@type": "Answer",
+      "text": "YouTube stores high resolutions as video-only streams. QuickSave automatically merges the best audio with your chosen video quality, so the MP4 you save always has sound."
+     }
+    },
+    {
+     "@type": "Question",
+     "name": "What is the highest quality I can download?",
+     "acceptedAnswer": {
+      "@type": "Answer",
+      "text": "Whatever the video itself offers \u2014 up to 4K (2160p) plus HDR sources where available. QuickSave lists every format the video provides."
+     }
+    },
+    {
+     "@type": "Question",
+     "name": "Can I download a whole playlist?",
+     "acceptedAnswer": {
+      "@type": "Answer",
+      "text": "QuickSave downloads one video at a time. Paste each video's own link; playlists themselves are not fetched."
+     }
+    },
+    {
+     "@type": "Question",
+     "name": "Do age-restricted or private videos work?",
+     "acceptedAnswer": {
+      "@type": "Answer",
+      "text": "No. Only public videos can be downloaded \u2014 private, unlisted-without-access and age-restricted videos are blocked by YouTube itself."
+     }
+    }
+   ]
+  }
+ ]
+}
+</script>
+</head>
+<body>
+<header class="site-header">
+  <a class="logo" href="/"><img class="logo-icon" src="/download.svg" alt="QuickSave logo">Quick<span>Save</span></a>
+  <nav>
+    <a href="/youtube-video-downloader/">YouTube</a>
+    <a href="/facebook-video-downloader/">Facebook</a>
+    <a href="/instagram-video-downloader/">Instagram</a>
+    <a href="/tiktok-video-downloader/">TikTok</a>
+    <a href="/youtube-to-mp3/">YouTube to MP3</a>
+    <a href="/video-converter/">Converter</a>
+  </nav>
+</header>
+<main>
+
+  <nav class="crumbs"><a href="/">QuickSave</a> › YouTube Video Downloader</nav>
+  <section class="hero">
+    <h1>YouTube Video Downloader</h1>
+    <p class="answer">QuickSave's YouTube video downloader saves any public YouTube video or Short straight from your browser. Paste the link, choose a quality — 360p for small files, 720p HD, 1080p, 1440p or 4K when the video offers it — and download a ready-to-play MP4, or extract the audio as MP3. It is free, needs no sign-up, adds no watermark, and works on phones and computers.</p>
+    <form id="resolve-form" class="fetch-box">
+      <input type="url" id="url-input" placeholder="Paste a YouTube link — e.g. https://www.youtube.com/watch?v=…" autocomplete="off" spellcheck="false" required>
+      <button type="submit" id="fetch-btn">Download</button>
+    </form>
+    <div id="status" class="status" hidden></div>
+    <p class="micro">Free · No sign-up · Works on phone &amp; computer · Only download content you have the right to save.</p>
+  </section>
+
+  <section id="result" class="result" hidden>
+    <div class="result-card">
+      <img id="r-thumb" alt="Video thumbnail">
+      <div class="result-meta">
+        <h2 id="r-title"></h2>
+        <p><span id="r-uploader"></span> · <span id="r-duration"></span> · via <span id="r-platform"></span></p>
+        <div class="quick-actions">
+          <button class="dl-btn best" data-format="best_mp4">⬇ Best quality MP4</button>
+          <button class="dl-btn audio" data-format="mp3">🎵 Audio only (MP3)</button>
+        </div>
+      </div>
+    </div>
+    <h3>Video</h3>
+    <div id="formats-video" class="format-grid"></div>
+    <h3>Audio</h3>
+    <div id="formats-audio" class="format-grid"></div>
+  </section>
+
+  <section class="panel">
+    <h2>How to download from YouTube</h2>
+    <div class="steps">
+      <div class="step"><strong>1. Copy the YouTube link</strong><p>Open the video or Short on YouTube and copy the URL from the address bar, or tap Share → Copy link in the app.</p></div>
+      <div class="step"><strong>2. Paste it above</strong><p>Paste the link into the QuickSave box and press Download. Every available quality loads in a few seconds.</p></div>
+      <div class="step"><strong>3. Choose quality or MP3</strong><p>Pick 720p/1080p/4K MP4 for watching, a smaller 360p file to save data, or Audio only (MP3) for music and podcasts.</p></div>
+      <div class="step"><strong>4. Save and watch offline</strong><p>The finished MP4 downloads to your device and plays in any video player, no internet needed.</p></div>
+      </div>
+  </section>
+
+  <section class="panel">
+    <h2>YouTube downloads, done right</h2>
+    <div class="steps">
+      <div class="step"><strong>Shorts included</strong><p>YouTube Shorts download exactly like regular videos — paste the Shorts link and save it as MP4 or MP3.</p></div>
+      <div class="step"><strong>Real HD & 4K</strong><p>QuickSave merges YouTube's separate video and audio streams, so 1080p and higher keep their sound — a step many downloaders skip.</p></div>
+      <div class="step"><strong>Music to MP3</strong><p>Turn any YouTube music video, live session or podcast into a 192 kbps MP3 with one extra click.</p></div>
+    </div>
+  </section>
+
+  <section class="panel">
+    <h2>More downloaders</h2>
+    <div class="card-grid">
+      <a class="card-link" href="/">All-in-one Video Downloader</a>
+      <a class="card-link" href="/facebook-video-downloader/">Facebook</a>
+      <a class="card-link" href="/instagram-video-downloader/">Instagram</a>
+      <a class="card-link" href="/tiktok-video-downloader/">TikTok</a>
+      <a class="card-link" href="/youtube-to-mp3/">YouTube to MP3</a>
+      <a class="card-link" href="/video-converter/">Converter</a>
+    </div>
+  </section>
+
+  <section id="faq" class="panel">
+    <h2>YouTube downloader — frequently asked questions</h2>
+    <details><summary>Can I download YouTube Shorts?</summary><p>Yes. Paste the Shorts link into the box above exactly like a normal video link, then choose MP4 or MP3.</p></details>
+    <details><summary>Why do some downloaders give silent 1080p files?</summary><p>YouTube stores high resolutions as video-only streams. QuickSave automatically merges the best audio with your chosen video quality, so the MP4 you save always has sound.</p></details>
+    <details><summary>What is the highest quality I can download?</summary><p>Whatever the video itself offers — up to 4K (2160p) plus HDR sources where available. QuickSave lists every format the video provides.</p></details>
+    <details><summary>Can I download a whole playlist?</summary><p>QuickSave downloads one video at a time. Paste each video's own link; playlists themselves are not fetched.</p></details>
+    <details><summary>Do age-restricted or private videos work?</summary><p>No. Only public videos can be downloaded — private, unlisted-without-access and age-restricted videos are blocked by YouTube itself.</p></details>
+  </section>
+</main>
+<footer>
+  <p><a href="/">Video Downloader</a> · <a href="/youtube-video-downloader/">YouTube</a> · <a href="/facebook-video-downloader/">Facebook</a> · <a href="/instagram-video-downloader/">Instagram</a> · <a href="/tiktok-video-downloader/">TikTok</a> · <a href="/youtube-to-mp3/">YouTube to MP3</a> · <a href="/video-converter/">Converter</a></p>
+  <p><strong>QuickSave</strong> — free online video downloader &amp; converter. No sign-up, no installs.</p>
+  <p>Only download content you own or have permission to save. Respect each platform's terms and creators' rights.</p>
+  <p>© 2026 QuickSave</p>
+</footer>
+<script src="/app.js"></script>
+</body>
+</html>

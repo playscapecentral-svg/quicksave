@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Vimeo Video Downloader — Save Vimeo Videos Free in HD | QuickSave</title>
+<meta name="description" content="Download public Vimeo videos free in HD MP4. Paste the Vimeo link, choose a quality, save to any device. No sign-up required.">
+<meta name="robots" content="index, follow">
+<link rel="canonical" href="https://quicksave.pages.dev/vimeo-video-downloader/">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="QuickSave">
+<meta property="og:title" content="Vimeo Video Downloader — Save Vimeo Videos Free in HD | QuickSave">
+<meta property="og:description" content="Download public Vimeo videos free in HD MP4. Paste the Vimeo link, choose a quality, save to any device. No sign-up required.">
+<meta property="og:url" content="https://quicksave.pages.dev/vimeo-video-downloader/">
+<meta property="og:image" content="https://quicksave.pages.dev/download.svg">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Vimeo Video Downloader — Save Vimeo Videos Free in HD | QuickSave">
+<meta name="twitter:description" content="Download public Vimeo videos free in HD MP4. Paste the Vimeo link, choose a quality, save to any device. No sign-up required.">
+<link rel="stylesheet" href="/style.css">
+<link rel="icon" type="image/svg+xml" href="/download.svg">
+<script type="application/ld+json">
+{
+ "@context": "https://schema.org",
+ "@graph": [
+  {
+   "@type": "WebApplication",
+   "name": "QuickSave \u2014 Vimeo Video Downloader",
+   "url": "https://quicksave.pages.dev/vimeo-video-downloader/",
+   "description": "Download public Vimeo videos free in HD MP4. Paste the Vimeo link, choose a quality, save to any device. No sign-up required.",
+   "applicationCategory": "MultimediaApplication",
+   "operatingSystem": "Any (web browser)",
+   "browserRequirements": "Requires JavaScript",
+   "offers": {
+    "@type": "Offer",
+    "price": "0",
+    "priceCurrency": "USD"
+   }
+  },
+  {
+   "@type": "BreadcrumbList",
+   "itemListElement": [
+    {
+     "@type": "ListItem",
+     "position": 1,
+     "name": "QuickSave",
+     "item": "https://quicksave.pages.dev/"
+    },
+    {
+     "@type": "ListItem",
+     "position": 2,
+     "name": "Vimeo Video Downloader",
+     "item": "https://quicksave.pages.dev/vimeo-video-downloader/"
+    }
+   ]
+  },
+  {
+   "@type": "FAQPage",
+   "mainEntity": [
+    {
+     "@type": "Question",
+     "name": "Can I download any Vimeo video?",
+     "acceptedAnswer": {
+      "@type": "Answer",
+      "text": "Only public videos whose owners allow external access. Password-protected and private videos cannot be downloaded."
+     }
+    },
+    {
+     "@type": "Question",
+     "name": "Why is a quality missing?",
+     "acceptedAnswer": {
+      "@type": "Answer",
+      "text": "Vimeo lets creators limit which resolutions exist. QuickSave shows everything the video actually offers."
+     }
+    },
+    {
+     "@type": "Question",
+     "name": "Can I get just the audio?",
+     "acceptedAnswer": {
+      "@type": "Answer",
+      "text": "Yes \u2014 choose Audio only (MP3) after the formats load."
+     }
+    }
+   ]
+  }
+ ]
+}
+</script>
+</head>
+<body>
+<header class="site-header">
+  <a class="logo" href="/"><img class="logo-icon" src="/download.svg" alt="QuickSave logo">Quick<span>Save</span></a>
+  <nav>
+    <a href="/youtube-video-downloader/">YouTube</a>
+    <a href="/facebook-video-downloader/">Facebook</a>
+    <a href="/instagram-video-downloader/">Instagram</a>
+    <a href="/tiktok-video-downloader/">TikTok</a>
+    <a href="/youtube-to-mp3/">YouTube to MP3</a>
+    <a href="/video-converter/">Converter</a>
+  </nav>
+</header>
+<main>
+
+  <nav class="crumbs"><a href="/">QuickSave</a> › Vimeo Video Downloader</nav>
+  <section class="hero">
+    <h1>Vimeo Video Downloader</h1>
+    <p class="answer">QuickSave's Vimeo video downloader saves public Vimeo videos as MP4 files in the quality you choose — SD, HD or higher when the creator enabled it. Paste the Vimeo link, press Download, pick a format and save. Free, browser-based, and no sign-up.</p>
+    <form id="resolve-form" class="fetch-box">
+      <input type="url" id="url-input" placeholder="Paste a Vimeo link…" autocomplete="off" spellcheck="false" required>
+      <button type="submit" id="fetch-btn">Download</button>
+    </form>
+    <div id="status" class="status" hidden></div>
+    <p class="micro">Free · No sign-up · Works on phone &amp; computer · Only download content you have the right to save.</p>
+  </section>
+
+  <section id="result" class="result" hidden>
+    <div class="result-card">
+      <img id="r-thumb" alt="Video thumbnail">
+      <div class="result-meta">
+        <h2 id="r-title"></h2>
+        <p><span id="r-uploader"></span> · <span id="r-duration"></span> · via <span id="r-platform"></span></p>
+        <div class="quick-actions">
+          <button class="dl-btn best" data-format="best_mp4">⬇ Best quality MP4</button>
+          <button class="dl-btn audio" data-format="mp3">🎵 Audio only (MP3)</button>
+        </div>
+      </div>
+    </div>
+    <h3>Video</h3>
+    <div id="formats-video" class="format-grid"></div>
+    <h3>Audio</h3>
+    <div id="formats-audio" class="format-grid"></div>
+  </section>
+
+  <section class="panel">
+    <h2>How to download from Vimeo</h2>
+    <div class="steps">
+      <div class="step"><strong>1. Copy the Vimeo link</strong><p>Open the video on Vimeo and copy its URL from the address bar or the Share button.</p></div>
+      <div class="step"><strong>2. Paste it above</strong><p>Paste the link into QuickSave and press Download.</p></div>
+      <div class="step"><strong>3. Choose a quality</strong><p>Pick from the resolutions the creator made available, or save the audio as MP3.</p></div>
+      <div class="step"><strong>4. Download the MP4</strong><p>The finished file saves to your device, ready to watch offline.</p></div>
+      </div>
+  </section>
+
+  <section class="panel">
+    <h2>Vimeo downloads, done right</h2>
+    <div class="steps">
+      <div class="step"><strong>Creator-controlled quality</strong><p>Offers every resolution the uploader enabled, up to HD and beyond.</p></div>
+      <div class="step"><strong>Clean MP4 output</strong><p>Video and audio are merged into one standard file when needed.</p></div>
+      <div class="step"><strong>Great for embeds</strong><p>Save talks, lessons and portfolio pieces for offline viewing.</p></div>
+    </div>
+  </section>
+
+  <section class="panel">
+    <h2>More downloaders</h2>
+    <div class="card-grid">
+      <a class="card-link" href="/">All-in-one Video Downloader</a>
+      <a class="card-link" href="/youtube-video-downloader/">YouTube</a>
+      <a class="card-link" href="/facebook-video-downloader/">Facebook</a>
+      <a class="card-link" href="/instagram-video-downloader/">Instagram</a>
+      <a class="card-link" href="/tiktok-video-downloader/">TikTok</a>
+      <a class="card-link" href="/youtube-to-mp3/">YouTube to MP3</a>
+      <a class="card-link" href="/video-converter/">Converter</a>
+    </div>
+  </section>
+
+  <section id="faq" class="panel">
+    <h2>Vimeo downloader — frequently asked questions</h2>
+    <details><summary>Can I download any Vimeo video?</summary><p>Only public videos whose owners allow external access. Password-protected and private videos cannot be downloaded.</p></details>
+    <details><summary>Why is a quality missing?</summary><p>Vimeo lets creators limit which resolutions exist. QuickSave shows everything the video actually offers.</p></details>
+    <details><summary>Can I get just the audio?</summary><p>Yes — choose Audio only (MP3) after the formats load.</p></details>
+  </section>
+</main>
+<footer>
+  <p><a href="/">Video Downloader</a> · <a href="/youtube-video-downloader/">YouTube</a> · <a href="/facebook-video-downloader/">Facebook</a> · <a href="/instagram-video-downloader/">Instagram</a> · <a href="/tiktok-video-downloader/">TikTok</a> · <a href="/youtube-to-mp3/">YouTube to MP3</a> · <a href="/video-converter/">Converter</a></p>
+  <p><strong>QuickSave</strong> — free online video downloader &amp; converter. No sign-up, no installs.</p>
+  <p>Only download content you own or have permission to save. Respect each platform's terms and creators' rights.</p>
+  <p>© 2026 QuickSave</p>
+</footer>
+<script src="/app.js"></script>
+</body>
+</html>

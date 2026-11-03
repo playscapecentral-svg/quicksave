@@ -1,0 +1,21 @@
+# QuickSave
+
+> QuickSave is a free online video downloader and file converter. Paste a link from YouTube, Facebook, Instagram, TikTok, Vimeo or 1,000+ other sites to download the video as MP4 (up to HD/4K) or extract its audio as MP3. It also converts uploaded files between MP3, MP4, WEBM, MOV, MKV and GIF. No sign-up, no software to install, no watermarks.
+
+## Pages
+
+- [Video Downloader](https://quicksave.pages.dev/): the all-in-one downloader for 1,000+ sites
+- [YouTube Video Downloader](https://quicksave.pages.dev/youtube-video-downloader/): download YouTube videos and Shorts in HD/4K MP4 or MP3
+- [Facebook Video Downloader](https://quicksave.pages.dev/facebook-video-downloader/): save public Facebook videos and Reels in HD/SD
+- [Instagram Video Downloader](https://quicksave.pages.dev/instagram-video-downloader/): save Instagram Reels and videos as MP4
+- [TikTok Video Downloader](https://quicksave.pages.dev/tiktok-video-downloader/): save TikTok videos in HD or extract sounds as MP3
+- [Vimeo Video Downloader](https://quicksave.pages.dev/vimeo-video-downloader/): save public Vimeo videos in HD
+- [YouTube to MP3](https://quicksave.pages.dev/youtube-to-mp3/): convert YouTube videos to high-quality MP3 audio
+- [Video Converter](https://quicksave.pages.dev/video-converter/): convert files between MP3, MP4, WEBM, MOV, MKV and GIF (up to 200 MB)
+
+## Key facts
+
+- Cost: free, no accounts or quotas
+- Input: a video URL, or an uploaded media file for the converter
+- Output: MP4 video (up to the source's maximum quality, incl. 1080p/4K), MP3 audio, or converted files
+- Devices: works in any modern browser on phone and computer

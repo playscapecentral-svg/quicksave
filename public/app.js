@@ -37,7 +37,7 @@ function makeDlButton(label, formatId) {
 async function resolve(url) {
   if (!API_BASE) {
     setStatus("No backend connected yet. Set your Backend URL in the 'Backend server' section below first — downloads run on that server.", true);
-    document.querySelector("#backend").scrollIntoView({ behavior: "smooth" });
+    const b = document.querySelector("#backend"); if (b) b.scrollIntoView({ behavior: "smooth" });
     return;
   }
   currentUrl = url;
@@ -105,6 +105,7 @@ fetch(api("/api/supported")).then((r) => r.json()).then((data) => {
 const dz = $("#drop-zone"), fileInput = $("#convert-file"),
       convBtn = $("#convert-btn"), convStatus = $("#convert-status");
 let convertFile = null;
+if (dz && fileInput && convBtn && convStatus) {
 function setConvertFile(f) {
   convertFile = f || null;
   $("#convert-name").textContent = f ? `${f.name} (${fmtSize(f.size)})` : "";
@@ -146,8 +147,9 @@ convBtn.addEventListener("click", async () => {
     convStatus.classList.add("error"); convStatus.textContent = e.message;
   } finally { convBtn.disabled = false; }
 });
+}
 
-// ---- Static (Cloudflare Pages) extras: backend picker + platform switcher
+// ---- Static (Cloudflare Pages) extras: backend picker (only on pages that include it)
 const apiInput = document.querySelector("#api-base"), apiStatus = document.querySelector("#api-status");
 if (apiInput) {
   apiInput.value = API_BASE;
@@ -159,13 +161,3 @@ if (apiInput) {
   });
   if (!API_BASE) { apiStatus.hidden = false; apiStatus.classList.add("error"); apiStatus.textContent = "No backend set yet — downloads will not work until you set a Backend URL above."; }
 }
-const PLATFORMS = { youtube: "YouTube", facebook: "Facebook", instagram: "Instagram", tiktok: "TikTok", vimeo: "Vimeo" };
-document.querySelectorAll("[data-platform-link]").forEach((a) => {
-  a.addEventListener("click", (e) => {
-    e.preventDefault();
-    const name = PLATFORMS[a.dataset.platformLink] || "Video";
-    document.querySelector(".hero h1").textContent = name + " Video Downloader — paste a link, pick a quality, download";
-    input.placeholder = "Paste a " + name + " link here…";
-    input.focus();
-  });
-});
