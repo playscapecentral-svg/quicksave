@@ -1,0 +1,8 @@
+# Copy this file to ~/.cloudflared/config.yml and replace the values.
+tunnel: YOUR_TUNNEL_ID_HERE
+credentials-file: /home/YOUR_USER/.cloudflared/YOUR_TUNNEL_ID_HERE.json
+
+ingress:
+  - hostname: download.yourdomain.com
+    service: http://127.0.0.1:5000
+  - service: http_status:404
