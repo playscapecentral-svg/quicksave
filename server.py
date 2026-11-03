@@ -39,6 +39,81 @@ HOST = os.environ.get("HOST", "0.0.0.0")
 PORT = int(os.environ.get("PORT", "5000"))
 MAX_UPLOAD_BYTES = 200 * 1024 * 1024
 
+# ------------------------------------------------------------ yt-dlp helpers
+_COOKIE_FILE = None
+
+
+def _cookiefile():
+    """Materialise Netscape-format cookies from the YTDLP_COOKIES env var.
+
+    Set YTDLP_COOKIES on the host (e.g. Render env vars) to the contents of
+    a cookies.txt exported from a logged-in browser. Never commit cookies
+    to the repo. Returns the temp file path, or None when unset.
+    """
+    global _COOKIE_FILE
+    raw = os.environ.get("YTDLP_COOKIES", "").strip()
+    if not raw:
+        return None
+    if _COOKIE_FILE is None:
+        fd, path = tempfile.mkstemp(prefix="quicksave-cookies-", suffix=".txt")
+        with os.fdopen(fd, "w") as fh:
+            fh.write(raw)
+        _COOKIE_FILE = path
+    return _COOKIE_FILE
+
+
+_YT_CLIENT_SETS = (
+    {"youtube": {"player_client": ["tv", "android", "ios"]}},
+    {"youtube": {"player_client": ["web", "mweb"]}},
+    {"youtube": {"player_client": ["android_vr", "tv"]}},
+)
+
+_BOT_MARKERS = ("sign in to confirm", "not a bot", "use --cookies",
+                "login required", "cookies are needed", "http error 403")
+
+
+def _looks_like_bot_wall(exc):
+    msg = str(exc).lower()
+    return any(marker in msg for marker in _BOT_MARKERS)
+
+
+def _ydl_attempts(base_opts):
+    """Opts dicts to try in order: as-is (+cookies), then alternate
+    YouTube player clients, which often pass where the default web
+    client is bot-walled on datacenter IPs."""
+    attempts = []
+    cf = _cookiefile()
+    first = dict(base_opts)
+    if cf:
+        first["cookiefile"] = cf
+    attempts.append(first)
+    for clients in _YT_CLIENT_SETS:
+        opts = dict(base_opts)
+        opts["extractor_args"] = clients
+        if cf:
+            opts["cookiefile"] = cf
+        attempts.append(opts)
+    return attempts
+
+
+def _extract(url, base_opts, download=False, between_attempts=None):
+    """extract_info with bot-wall retries across player clients.
+
+    Re-raises the first error immediately when it is not a bot wall.
+    """
+    last_exc = None
+    for i, opts in enumerate(_ydl_attempts(base_opts)):
+        if i and between_attempts is not None:
+            between_attempts()
+        try:
+            with yt_dlp.YoutubeDL(opts) as ydl:
+                return ydl.extract_info(url, download=download)
+        except DownloadError as e:
+            last_exc = e
+            if not _looks_like_bot_wall(e):
+                raise
+    raise last_exc
+
 PLATFORMS = {
     "home": {
         "slug": "",
@@ -185,8 +260,7 @@ def api_resolve():
         "socket_timeout": 45, "retries": 1, "noplaylist": True,
     }
     try:
-        with yt_dlp.YoutubeDL(opts) as ydl:
-            info = ydl.extract_info(url, download=False)
+        info = _extract(url, opts, download=False)
     except DownloadError as e:
         msg = re.sub(r"\x1b\[[0-9;]*m", "", str(e)).strip().splitlines()
         return jsonify({"error": (msg[0] if msg else "Could not resolve that link.")[:300]}), 422
@@ -243,9 +317,14 @@ def api_download():
         # Progressive formats play as-is; video-only formats get audio merged.
         opts["format"] = f"{format_id}+bestaudio/{format_id}/best"
         opts["merge_output_format"] = "mp4"
+    def _clean_tmp():
+        for name in os.listdir(tmpdir):
+            p = os.path.join(tmpdir, name)
+            if os.path.isfile(p):
+                os.unlink(p)
+
     try:
-        with yt_dlp.YoutubeDL(opts) as ydl:
-            info = ydl.extract_info(url, download=True)
+        info = _extract(url, opts, download=True, between_attempts=_clean_tmp)
     except DownloadError as e:
         shutil.rmtree(tmpdir, ignore_errors=True)
         msg = re.sub(r"\x1b\[[0-9;]*m", "", str(e)).strip().splitlines()
