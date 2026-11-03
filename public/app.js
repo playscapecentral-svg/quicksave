@@ -35,6 +35,11 @@ function makeDlButton(label, formatId) {
 }
 
 async function resolve(url) {
+  if (!API_BASE) {
+    setStatus("No backend connected yet. Set your Backend URL in the 'Backend server' section below first — downloads run on that server.", true);
+    document.querySelector("#backend").scrollIntoView({ behavior: "smooth" });
+    return;
+  }
   currentUrl = url;
   result.hidden = true;
   fetchBtn.disabled = true;
@@ -44,7 +49,8 @@ async function resolve(url) {
       method: "POST", headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ url }),
     });
-    const data = await r.json();
+    let data = {};
+    try { data = await r.json(); } catch (_) { throw new Error("The backend did not answer properly — check the Backend URL in the 'Backend server' section."); }
     if (!r.ok) throw new Error(data.error || "Could not resolve that link.");
     $("#r-thumb").src = data.thumbnail || "";
     $("#r-title").textContent = data.title || "Untitled";
@@ -108,6 +114,10 @@ fileInput.addEventListener("change", () => setConvertFile(fileInput.files[0]));
 ["dragleave", "drop"].forEach((ev) => dz.addEventListener(ev, (e) => { e.preventDefault(); dz.classList.remove("drag"); }));
 dz.addEventListener("drop", (e) => setConvertFile(e.dataTransfer.files[0]));
 convBtn.addEventListener("click", async () => {
+  if (!API_BASE) {
+    convStatus.hidden = false; convStatus.classList.add("error");
+    convStatus.textContent = "No backend connected yet — set your Backend URL above first."; return;
+  }
   if (!convertFile) {
     convStatus.hidden = false; convStatus.classList.add("error");
     convStatus.textContent = "Choose a file first."; return;
