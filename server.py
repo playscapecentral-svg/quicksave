@@ -118,18 +118,62 @@ def _ydl_attempts(base_opts):
     return attempts
 
 
+import copy
+import threading
+
+_INFO_CACHE = {}
+_INFO_CACHE_LOCK = threading.Lock()
+_INFO_TTL = 3600  # googlevideo URLs live ~6h; 1h is safely inside that
+
+
+def _cache_get(url):
+    with _INFO_CACHE_LOCK:
+        hit = _INFO_CACHE.get(url)
+        if hit and time.time() - hit[0] < _INFO_TTL:
+            return copy.deepcopy(hit[1])
+    return None
+
+
+def _cache_put(url, info):
+    if not isinstance(info, dict) or info.get("_type") == "playlist":
+        return
+    with _INFO_CACHE_LOCK:
+        _INFO_CACHE[url] = (time.time(), copy.deepcopy(info))
+        if len(_INFO_CACHE) > 50:  # keep it small: drop the oldest entry
+            _INFO_CACHE.pop(min(_INFO_CACHE, key=lambda k: _INFO_CACHE[k][0]))
+
+
 def _extract(url, base_opts, download=False, between_attempts=None):
     """extract_info with bot-wall retries across player clients.
 
+    Downloads first try the resolve cache: re-extracting a YouTube page
+    (JS challenge solving on a small CPU) costs 10-20s before a single
+    byte moves, while the cached info lets the download start at once.
     Re-raises the first error immediately when it is not a bot wall.
     """
+    if download:
+        cached = _cache_get(url)
+        if cached is not None:
+            # One shot only: if the cached URLs were rejected (403 etc.),
+            # fall through to a fresh extraction instead of failing.
+            try:
+                opts = _ydl_attempts(base_opts)[0]
+                with yt_dlp.YoutubeDL(opts) as ydl:
+                    return ydl.process_ie_result(copy.deepcopy(cached),
+                                                 download=True)
+            except DownloadError:
+                if between_attempts is not None:
+                    between_attempts()
     last_exc = None
     for i, opts in enumerate(_ydl_attempts(base_opts)):
         if i and between_attempts is not None:
             between_attempts()
         try:
             with yt_dlp.YoutubeDL(opts) as ydl:
-                return ydl.extract_info(url, download=download)
+                info = ydl.extract_info(url, download=download)
+                if not download:
+                    _cache_put(url, info)
+                return info
         except DownloadError as e:
             last_exc = e
             if not _looks_like_bot_wall(e):
@@ -321,6 +365,8 @@ def api_download():
     opts = {
         "quiet": True, "no_warnings": True, "socket_timeout": 30,
         "retries": 2, "noplaylist": True,
+        "concurrent_fragment_downloads": 8,
+        "http_chunk_size": 10 * 1024 * 1024,
         "outtmpl": os.path.join(tmpdir, "%(title).80s.%(ext)s"),
         "restrictfilenames": True,
     }

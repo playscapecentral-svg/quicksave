@@ -30,7 +30,10 @@ function downloadUrl(formatId) {
 function makeDlButton(label, formatId) {
   const b = document.createElement("button");
   b.className = "dl-btn small"; b.textContent = "⬇ " + label;
-  b.addEventListener("click", () => { window.location.href = downloadUrl(formatId); });
+  b.addEventListener("click", () => {
+    setStatus("Preparing your file on the server — HD/large videos can take a little while…", false);
+    window.location.href = downloadUrl(formatId);
+  });
   return b;
 }
 
@@ -83,7 +86,11 @@ form.addEventListener("submit", (e) => {
   if (url) resolve(url);
 });
 document.querySelectorAll(".quick-actions .dl-btn").forEach((b) => {
-  b.addEventListener("click", () => { if (currentUrl) window.location.href = downloadUrl(b.dataset.format); });
+  b.addEventListener("click", () => {
+    if (!currentUrl) return;
+    setStatus("Preparing your file on the server — HD/large videos can take a little while…", false);
+    window.location.href = downloadUrl(b.dataset.format);
+  });
 });
 
 // Prefill from ?url= (used by the QuickSave Helper extension)
