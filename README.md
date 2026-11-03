@@ -1,3 +1,13 @@
+---
+title: QuickSave
+emoji: ⬇️
+colorFrom: purple
+colorTo: indigo
+sdk: docker
+app_port: 5000
+pinned: false
+---
+
 # QuickSave — local multi-platform video downloader & converter
 
 QuickSave is an original, locally-run implementation of the classic
