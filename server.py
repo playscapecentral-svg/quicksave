@@ -62,14 +62,33 @@ def _cookiefile():
     return _COOKIE_FILE
 
 
+# yt-dlp needs a JS runtime to solve YouTube's "n" challenge for the
+# cookie-supporting web clients; without one those clients return only
+# storyboard thumbnails. Prefer deno (installed in the Docker image),
+# fall back to node.
+_JS_RUNTIMES = {}
+for _rt in ("deno", "node"):
+    _rt_path = shutil.which(_rt)
+    if _rt_path:
+        _JS_RUNTIMES[_rt] = {"path": _rt_path}
+        break
+
 _YT_CLIENT_SETS = (
-    {"youtube": {"player_client": ["tv", "android", "ios"]}},
-    {"youtube": {"player_client": ["web", "mweb"]}},
-    {"youtube": {"player_client": ["android_vr", "tv"]}},
+    # Cookie-capable clients first — android/ios ignore cookies entirely.
+    {"youtube": {"player_client": ["web_safari"]}},
+    {"youtube": {"player_client": ["web"]}},
+    {"youtube": {"player_client": ["android", "ios"]}},
+    {"youtube": {"player_client": ["tv_embedded", "android_vr"]}},
 )
 
 _BOT_MARKERS = ("sign in to confirm", "not a bot", "use --cookies",
-                "login required", "cookies are needed", "http error 403")
+                "login required", "cookies are needed", "http error 403",
+                # Authenticated web-client extractions can return zero usable
+                # formats (PO-token/SABR gating) — other clients still work.
+                "requested format is not available", "no video formats found",
+                "no formats available", "missing a url",
+                # The tv client rejects some exported cookie sets this way.
+                "page needs to be reloaded")
 
 
 def _looks_like_bot_wall(exc):
@@ -83,16 +102,19 @@ def _ydl_attempts(base_opts):
     client is bot-walled on datacenter IPs."""
     attempts = []
     cf = _cookiefile()
-    first = dict(base_opts)
-    if cf:
-        first["cookiefile"] = cf
-    attempts.append(first)
+
+    def _with_common(opts):
+        if cf:
+            opts["cookiefile"] = cf
+        if _JS_RUNTIMES:
+            opts["js_runtimes"] = _JS_RUNTIMES
+        return opts
+
+    attempts.append(_with_common(dict(base_opts)))
     for clients in _YT_CLIENT_SETS:
         opts = dict(base_opts)
         opts["extractor_args"] = clients
-        if cf:
-            opts["cookiefile"] = cf
-        attempts.append(opts)
+        attempts.append(_with_common(opts))
     return attempts
 
 
