@@ -952,6 +952,130 @@ def api_convert():
         raise
 
 
+# ------------------------------------------- TEMPORARY loader.to probe
+# One-shot Render-side confirmation for the loader.to fallback build:
+# does the loader.to v2 flow (start -> progress -> media URL) work from
+# THIS server's IP? Removed in the same change that ships the fallback.
+# Guarded by X-QS-Test + QS_TEST_TOKEN when that secret is set; otherwise
+# by a one-time token — only its SHA-256 is stored here, never the token.
+import urllib.parse
+
+_PROBE_TOKEN_SHA256 = \
+    "158bb3586f8ddedc82ce3a432367b51306a9b1a065f105677ff166ef09d477f9"
+_PROBE_UA = {
+    "User-Agent": ("Mozilla/5.0 (Windows NT 10.0; Win64; x64) "
+                   "AppleWebKit/537.36 (KHTML, like Gecko) "
+                   "Chrome/130.0.0.0 Safari/537.36"),
+    "Accept": "application/json,*/*",
+    "Accept-Language": "en-US,en;q=0.9",
+    "Referer": "https://en.loader.to/",
+}
+_PROBE_LOADER_KEY = "dfcb6d76f2f6a9894gjkege8a4ab232222"  # loader frontend key
+
+
+def _probe_authorized():
+    if QS_TEST_TOKEN:
+        hdr = request.headers.get("X-QS-Test", "")
+        if hdr and hmac.compare_digest(hdr, QS_TEST_TOKEN):
+            return True
+    tok = request.headers.get("X-QS-Probe", "")
+    if tok:
+        digest = hashlib.sha256(tok.encode()).hexdigest()
+        if hmac.compare_digest(digest, _PROBE_TOKEN_SHA256):
+            return True
+    return False
+
+
+def _probe_get_json(url, timeout):
+    req = urllib.request.Request(url, headers=_PROBE_UA)
+    with urllib.request.urlopen(req, timeout=timeout) as resp:
+        return resp.status, json.loads(resp.read().decode("utf-8", "replace"))
+
+
+@app.post("/api/probe/loader")
+def api_probe_loader():
+    if not _probe_authorized():
+        abort(404)
+    out = {"ok": False, "steps": {}}
+    t_all = time.time()
+    video = "https://www.youtube.com/watch?v=jNQXAC9IVRw"
+    host = "p.savenow.to"
+    t0 = time.time()
+    try:
+        req = urllib.request.Request(f"https://{host}/api/health",
+                                     headers=_PROBE_UA)
+        with urllib.request.urlopen(req, timeout=15) as resp:
+            out["steps"]["health"] = {"status": resp.status,
+                                      "sec": round(time.time() - t0, 2)}
+            if resp.status != 200:
+                host = "p.lbserver.xyz"
+    except Exception as e:
+        out["steps"]["health"] = {"error": str(e)[:200],
+                                  "sec": round(time.time() - t0, 2)}
+        host = "p.lbserver.xyz"
+    out["host"] = host
+    t0 = time.time()
+    jid, dl = None, ""
+    try:
+        q = urllib.parse.urlencode({"format": "720", "url": video,
+                                    "apikey": _PROBE_LOADER_KEY})
+        status, j = _probe_get_json(f"https://{host}/api/v2/download?{q}", 40)
+        jid = j.get("id")
+        dl = j.get("download_url") or ""
+        out["steps"]["start"] = {
+            "status": status, "sec": round(time.time() - t0, 2), "id": jid,
+            "title": (j.get("info") or {}).get("title"),
+            "success": j.get("success")}
+    except Exception as e:
+        out["steps"]["start"] = {"error": str(e)[:200],
+                                 "sec": round(time.time() - t0, 2)}
+        out["total_sec"] = round(time.time() - t_all, 2)
+        return jsonify(out)
+    t0 = time.time()
+    polls, last = 0, {}
+    while jid and not dl and time.time() - t0 < 240:
+        time.sleep(5)
+        polls += 1
+        try:
+            _, pj = _probe_get_json(
+                f"https://{host}/api/progress?id={urllib.parse.quote(jid)}",
+                30)
+            last = pj
+            dl = pj.get("download_url") or dl
+            if pj.get("success") in (1, True) and dl:
+                break
+        except Exception as e:
+            last = {"error": str(e)[:200]}
+    out["steps"]["progress"] = {"polls": polls,
+                                "sec": round(time.time() - t0, 2),
+                                "progress": last.get("progress"),
+                                "success": last.get("success"),
+                                "text": last.get("text"),
+                                "error": last.get("error")}
+    out["download_url_host"] = _url_host(dl) if dl else None
+    if dl:
+        t0 = time.time()
+        try:
+            h = dict(_PROBE_UA)
+            h["Range"] = "bytes=0-2047"
+            req = urllib.request.Request(dl, headers=h)
+            with urllib.request.urlopen(req, timeout=25) as resp:
+                chunk = resp.read(4096)
+                out["steps"]["range"] = {
+                    "status": resp.status,
+                    "content_type": resp.headers.get("Content-Type"),
+                    "bytes_read": len(chunk),
+                    "sec": round(time.time() - t0, 2)}
+                ctype = resp.headers.get("Content-Type") or ""
+                out["ok"] = bool(resp.status in (200, 206) and chunk
+                                 and ("video" in ctype or "audio" in ctype
+                                      or "octet-stream" in ctype))
+        except Exception as e:
+            out["steps"]["range"] = {"error": str(e)[:200]}
+    out["total_sec"] = round(time.time() - t_all, 2)
+    return jsonify(out)
+
+
 @app.get("/api/health")
 def api_health():
     with _ingest_failed_lock:
