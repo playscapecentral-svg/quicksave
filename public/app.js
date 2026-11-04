@@ -1,5 +1,5 @@
 "use strict";
-const API_BASE = (localStorage.getItem("qs_api_base") || "https://quicksave-tgyk.onrender.com").replace(/\/$/, "");
+const API_BASE = "https://quicksave-tgyk.onrender.com";
 function api(path) { return API_BASE + path; }
 const $ = (s) => document.querySelector(s);
 const form = $("#resolve-form"), input = $("#url-input"), fetchBtn = $("#fetch-btn");
@@ -80,7 +80,7 @@ async function resolve(url) {
   }
 }
 
-form.addEventListener("submit", (e) => {
+if (form) form.addEventListener("submit", (e) => {
   e.preventDefault();
   const url = input.value.trim();
   if (url) resolve(url);
@@ -95,18 +95,19 @@ document.querySelectorAll(".quick-actions .dl-btn").forEach((b) => {
 
 // Prefill from ?url= (used by the QuickSave Helper extension)
 const prefill = new URLSearchParams(window.location.search).get("url");
-if (prefill) { input.value = prefill; resolve(prefill); }
+if (prefill && input) { input.value = prefill; resolve(prefill); }
 
 // ---- Supported platforms
-fetch(api("/api/supported")).then((r) => r.json()).then((data) => {
-  $("#supported-note").textContent =
+const supNote = $("#supported-note"), supGrid = $("#supported-grid");
+if (supNote && supGrid) fetch(api("/api/supported")).then((r) => r.json()).then((data) => {
+  supNote.textContent =
     `QuickSave's resolver ships ${data.count} site extractors. Highlights:`;
-  const grid = $("#supported-grid");
+  const grid = supGrid;
   const items = (data.highlights && data.highlights.length ? data.highlights : data.sample.slice(0, 24));
   for (const name of items) {
     const c = document.createElement("span"); c.className = "chip"; c.textContent = name; grid.appendChild(c);
   }
-}).catch(() => { $("#supported-note").textContent = "Coverage list unavailable right now."; });
+}).catch(() => { supNote.textContent = "Coverage list unavailable right now."; });
 
 // ---- Converter
 const dz = $("#drop-zone"), fileInput = $("#convert-file"),
