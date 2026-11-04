@@ -143,6 +143,25 @@ def _cache_put(url, info):
             _INFO_CACHE.pop(min(_INFO_CACHE, key=lambda k: _INFO_CACHE[k][0]))
 
 
+def _ydl_attempts_nocookie(base_opts):
+    """Same rotation but WITHOUT the cookie file. If the stored login
+    session gets blocked for this server's IP, the PO-token provider
+    (bgutil, running on localhost:4416 in the Docker image) can still
+    pass the bot check for the web clients — no account involved."""
+    attempts = []
+    first = dict(base_opts)
+    if _JS_RUNTIMES:
+        first["js_runtimes"] = _JS_RUNTIMES
+    attempts.append(first)
+    for clients in _YT_CLIENT_SETS:
+        opts = dict(base_opts)
+        opts["extractor_args"] = clients
+        if _JS_RUNTIMES:
+            opts["js_runtimes"] = _JS_RUNTIMES
+        attempts.append(opts)
+    return attempts
+
+
 def _extract(url, base_opts, download=False, between_attempts=None):
     """extract_info with bot-wall retries across player clients.
 
@@ -178,6 +197,22 @@ def _extract(url, base_opts, download=False, between_attempts=None):
             last_exc = e
             if not _looks_like_bot_wall(e):
                 raise
+    if _cookiefile():
+        # Every cookie attempt hit the bot wall — the login session is
+        # blocked from this IP. Retry without cookies (PO-token route).
+        for i, opts in enumerate(_ydl_attempts_nocookie(base_opts)):
+            if between_attempts is not None:
+                between_attempts()
+            try:
+                with yt_dlp.YoutubeDL(opts) as ydl:
+                    info = ydl.extract_info(url, download=download)
+                    if not download:
+                        _cache_put(url, info)
+                    return info
+            except DownloadError as e:
+                last_exc = e
+                if not _looks_like_bot_wall(e):
+                    raise
     raise last_exc
 
 PLATFORMS = {
