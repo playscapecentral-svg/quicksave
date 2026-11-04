@@ -19,6 +19,7 @@ import tempfile
 import threading
 import time
 import urllib.error
+import urllib.parse
 import urllib.request
 import uuid
 
@@ -950,6 +951,141 @@ def api_convert():
         if not os.path.exists(tmpdir):
             raise
         raise
+
+
+# ------------------------------------------- TEMP probe (loader round 2)
+# One-time-token-guarded probe: runs loader.to's full flow from THIS host
+# against a chosen API host. Only the SHA-256 of the token is in code; the
+# token itself is never committed. REMOVE THIS WHOLE BLOCK after the probe.
+_PROBE_TOKEN_SHA256 = (
+    "ff5077315dc45078c41f54735af30fb4dde41af774afec105b1406f945a8a7c9")
+_PROBE_HOSTS = ("p.lbserver.xyz", "p.savenow.to")
+_PROBE_APIKEY = "dfcb6d76f2f6a9894gjkege8a4ab232222"  # loader frontend key
+_PROBE_ZOO = "https://www.youtube.com/watch?v=jNQXAC9IVRw"
+_PROBE_HEADERS = {
+    "User-Agent": ("Mozilla/5.0 (Windows NT 10.0; Win64; x64) "
+                   "AppleWebKit/537.36 (KHTML, like Gecko) "
+                   "Chrome/130.0.0.0 Safari/537.36"),
+    "Accept": "application/json,*/*",
+    "Accept-Language": "en-US,en;q=0.9",
+    "Referer": "https://en.loader.to/",
+}
+_probes = {}
+_probes_lock = threading.Lock()
+
+
+def _probe_http(url, timeout, extra_headers=None):
+    headers = dict(_PROBE_HEADERS)
+    if extra_headers:
+        headers.update(extra_headers)
+    req = urllib.request.Request(url, headers=headers, method="GET")
+    t0 = time.time()
+    try:
+        with urllib.request.urlopen(req, timeout=timeout) as resp:
+            body = resp.read(65536)
+            return {"status": resp.status, "elapsed_s": round(time.time() - t0, 2),
+                    "content_type": resp.headers.get("Content-Type", ""),
+                    "body": body}
+    except urllib.error.HTTPError as e:
+        try:
+            body = e.read(65536)
+        except Exception:
+            body = b""
+        return {"status": e.code, "elapsed_s": round(time.time() - t0, 2),
+                "content_type": e.headers.get("Content-Type", "") if e.headers else "",
+                "body": body}
+    except Exception as e:  # noqa: BLE001
+        return {"status": None, "elapsed_s": round(time.time() - t0, 2),
+                "content_type": "", "body": b"", "error": str(e)[:200]}
+
+
+def _probe_json(body):
+    try:
+        return json.loads(body.decode("utf-8", "replace"))
+    except Exception:
+        return None
+
+
+def _probe_run(pid, host):
+    flow_t0 = time.time()
+    out = {"host": host, "video": _PROBE_ZOO, "steps": {}}
+    try:
+        r = _probe_http(f"https://{host}/api/health", 15)
+        out["steps"]["health"] = {
+            "status": r["status"], "elapsed_s": r["elapsed_s"],
+            "snippet": r["body"][:160].decode("utf-8", "replace")}
+        q = urllib.parse.urlencode({"format": "720", "url": _PROBE_ZOO,
+                                    "apikey": _PROBE_APIKEY})
+        r = _probe_http(f"https://{host}/api/v2/download?{q}", 40)
+        j = _probe_json(r["body"])
+        job_id = (j or {}).get("id")
+        dl_url = (j or {}).get("download_url") or (j or {}).get("url")
+        out["steps"]["start"] = {
+            "status": r["status"], "elapsed_s": r["elapsed_s"],
+            "job_id": job_id, "title": (j or {}).get("title"),
+            "snippet": r["body"][:200].decode("utf-8", "replace")}
+        polls = []
+        deadline = flow_t0 + 240
+        while job_id and not dl_url and time.time() < deadline:
+            time.sleep(5)
+            rp = _probe_http(
+                f"https://{host}/api/progress?"
+                + urllib.parse.urlencode({"id": job_id}), 30)
+            pj = _probe_json(rp["body"])
+            if pj:
+                dl_url = pj.get("download_url") or dl_url
+            polls.append({"status": rp["status"],
+                          "elapsed_s": rp["elapsed_s"],
+                          "progress": (pj or {}).get("progress"),
+                          "success": (pj or {}).get("success"),
+                          "text": (pj or {}).get("text")})
+            if (pj or {}).get("success") in (1, "1", True):
+                break
+        out["steps"]["polls"] = polls
+        out["download_url_host"] = _url_host(dl_url) if dl_url else None
+        if dl_url:
+            rr = _probe_http(dl_url, 25, {"Range": "bytes=0-2047"})
+            out["steps"]["range"] = {
+                "status": rr["status"], "elapsed_s": rr["elapsed_s"],
+                "content_type": rr["content_type"],
+                "bytes_read": len(rr["body"])}
+            ct = rr["content_type"] or ""
+            out["pass"] = bool(
+                out["steps"]["start"]["status"] == 200
+                and rr["status"] in (200, 206) and len(rr["body"]) > 0
+                and ("video" in ct or "audio" in ct or "octet-stream" in ct))
+        else:
+            out["pass"] = False
+    except Exception as e:  # noqa: BLE001
+        out["error"] = str(e)[:200]
+        out["pass"] = False
+    out["total_elapsed_s"] = round(time.time() - flow_t0, 2)
+    with _probes_lock:
+        _probes[pid] = {"state": "done", "result": out}
+
+
+@app.get("/api/probe-loader")
+def api_probe_loader():
+    tok = request.args.get("token") or ""
+    digest = hashlib.sha256(tok.encode()).hexdigest()
+    if not tok or not hmac.compare_digest(digest, _PROBE_TOKEN_SHA256):
+        abort(404)
+    pid = (request.args.get("probe_id") or "").strip()
+    if pid:
+        with _probes_lock:
+            rec = _probes.get(pid)
+        if rec is None:
+            return jsonify({"error": "unknown probe_id"}), 404
+        return jsonify(rec)
+    host = (request.args.get("host") or "").strip()
+    if host not in _PROBE_HOSTS:
+        return jsonify({"error": "host not allowed"}), 400
+    pid = uuid.uuid4().hex
+    with _probes_lock:
+        _probes[pid] = {"state": "running", "host": host}
+    threading.Thread(target=_probe_run, args=(pid, host),
+                     daemon=True, name="qs-loader-probe").start()
+    return jsonify({"probe_id": pid, "state": "running", "host": host})
 
 
 @app.get("/api/health")
