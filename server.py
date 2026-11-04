@@ -15,7 +15,7 @@ import tempfile
 import time
 
 from flask import (
-    Flask, jsonify, render_template, request, send_file, abort,
+    Flask, Response, jsonify, render_template, request, send_file, abort,
 )
 from werkzeug.utils import secure_filename
 
@@ -110,6 +110,8 @@ def _ydl_attempts(base_opts):
             opts["js_runtimes"] = _JS_RUNTIMES
         return opts
 
+    attempts.append(_with_common(dict(base_opts,
+        extractor_args={"youtube": {"player_client": ["web_embedded"]}})))
     attempts.append(_with_common(dict(base_opts)))
     for clients in _YT_CLIENT_SETS:
         opts = dict(base_opts)
@@ -316,6 +318,85 @@ def _clean_formats(info):
     return video + audio
 
 
+
+import urllib.request
+import urllib.error
+
+
+def _relay_format(url, format_id):
+    """Stream a single-file format straight through to the browser.
+
+    The old flow downloaded the whole file to the server (plus a merge)
+    before the browser saw a single byte — that is why downloads "took
+    forever to start". When the picked format is one self-contained
+    http(s) stream (progressive MP4, audio-only, ...), relay its bytes
+    chunk by chunk instead: the browser's download starts in ~1s.
+    Returns a Flask Response, or None when relaying does not apply /
+    the upstream refuses (caller falls back to the classic flow).
+    """
+    if format_id in ("mp3", "best_mp4"):
+        return None
+    info = _cache_get(url)
+    if info is None:
+        try:
+            info = _extract(url, {"quiet": True, "no_warnings": True,
+                                  "skip_download": True, "socket_timeout": 45,
+                                  "retries": 1, "noplaylist": True},
+                            download=False)
+        except Exception:
+            return None
+    fmt = None
+    for f in info.get("formats") or []:
+        if str(f.get("format_id")) == format_id:
+            fmt = f
+            break
+    if not fmt:
+        return None
+    direct = fmt.get("url") or ""
+    proto = fmt.get("protocol") or ""
+    if not direct.startswith("http") or proto not in ("https", "http"):
+        return None
+    vcodec, acodec = fmt.get("vcodec"), fmt.get("acodec")
+    if vcodec == "none" and acodec == "none":
+        return None
+    if vcodec == "none" or acodec == "none":
+        # Video-only needs the audio merge; audio-only DASH URLs throttle
+        # a plain relay (measured: 3.9 MB in 300s) — yt-dlp's chunked
+        # downloader handles both better. Relay only combined streams.
+        return None
+    headers = dict(fmt.get("http_headers") or {})
+    headers.setdefault("User-Agent", "Mozilla/5.0")
+    req = urllib.request.Request(direct, headers=headers)
+    try:
+        upstream = urllib.request.urlopen(req, timeout=30)
+    except Exception:
+        return None
+    if upstream.status != 200:
+        upstream.close()
+        return None
+    ext = fmt.get("ext") or "mp4"
+    filename = _safe_name(info.get("title"), ext)
+    length = upstream.headers.get("Content-Length")
+    ctype = {"mp4": "video/mp4", "webm": "video/webm", "m4a": "audio/mp4",
+             "mp3": "audio/mpeg", "opus": "audio/ogg"}.get(ext,
+                                                           "application/octet-stream")
+
+    def _gen():
+        try:
+            while True:
+                chunk = upstream.read(256 * 1024)
+                if not chunk:
+                    break
+                yield chunk
+        finally:
+            upstream.close()
+
+    resp = Response(_gen(), status=200, mimetype=ctype)
+    resp.headers["Content-Disposition"] = f'attachment; filename="{filename}"'
+    if length:
+        resp.headers["Content-Length"] = length
+    return resp
+
 # ---------------------------------------------------------------- pages
 @app.route("/")
 def index():
@@ -395,6 +476,10 @@ def api_download():
         return jsonify({"error": "Missing or invalid url."}), 400
     if not re.match(r"^[\w.\-+]+$", format_id):
         return jsonify({"error": "Invalid format_id."}), 400
+
+    relay = _relay_format(url, format_id)
+    if relay is not None:
+        return relay
 
     tmpdir = tempfile.mkdtemp(prefix="quicksave-dl-")
     opts = {
