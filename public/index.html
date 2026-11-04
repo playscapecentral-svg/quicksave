@@ -3,18 +3,18 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>QuickSave — Free Video Downloader Online (HD & 4K, No Sign-Up)</title>
+<title>QuickSave, Free Video Downloader Online (HD & 4K, No Sign-Up)</title>
 <meta name="description" content="Download videos free from YouTube, Facebook, Instagram, TikTok & 1,000+ sites. HD/4K MP4 or MP3, no sign-up, no watermark. Works on phone & PC.">
 <meta name="robots" content="index, follow">
 <link rel="canonical" href="https://quicksave.pages.dev/">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="QuickSave">
-<meta property="og:title" content="QuickSave — Free Video Downloader Online (HD & 4K, No Sign-Up)">
+<meta property="og:title" content="QuickSave, Free Video Downloader Online (HD & 4K, No Sign-Up)">
 <meta property="og:description" content="Download videos free from YouTube, Facebook, Instagram, TikTok & 1,000+ sites. HD/4K MP4 or MP3, no sign-up, no watermark. Works on phone & PC.">
 <meta property="og:url" content="https://quicksave.pages.dev/">
 <meta property="og:image" content="https://quicksave.pages.dev/download.svg">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="QuickSave — Free Video Downloader Online (HD & 4K, No Sign-Up)">
+<meta name="twitter:title" content="QuickSave, Free Video Downloader Online (HD & 4K, No Sign-Up)">
 <meta name="twitter:description" content="Download videos free from YouTube, Facebook, Instagram, TikTok & 1,000+ sites. HD/4K MP4 or MP3, no sign-up, no watermark. Works on phone & PC.">
 <link rel="stylesheet" href="/style.css">
 <link rel="icon" type="image/svg+xml" href="/download.svg">
@@ -24,7 +24,7 @@
  "@graph": [
   {
    "@type": "WebApplication",
-   "name": "QuickSave \u2014 Free Video Downloader",
+   "name": "QuickSave , Free Video Downloader",
    "url": "https://quicksave.pages.dev/",
    "description": "Free online video downloader for YouTube, Facebook, Instagram, TikTok and 1,000+ sites.",
    "applicationCategory": "MultimediaApplication",
@@ -49,7 +49,7 @@
      "name": "Is QuickSave free to use?",
      "acceptedAnswer": {
       "@type": "Answer",
-      "text": "Yes. QuickSave is completely free \u2014 no accounts, no sign-up, no download quotas and no watermarks on saved videos."
+      "text": "Yes. QuickSave is completely free , no accounts, no sign-up, no download quotas and no watermarks on saved videos."
      }
     },
     {
@@ -65,7 +65,7 @@
      "name": "How do I download a video with QuickSave?",
      "acceptedAnswer": {
       "@type": "Answer",
-      "text": "Copy the video's link, paste it into the box at the top of this page, press Download, then pick the quality you want. The file is prepared and saved straight to your device."
+      "text": "Copy the video’s link, paste it into the box at the top of this page, press Download, then pick the quality you want. The file is prepared and saved straight to your device."
      }
     },
     {
@@ -73,7 +73,7 @@
      "name": "Can I download YouTube videos in HD or 4K?",
      "acceptedAnswer": {
       "@type": "Answer",
-      "text": "Yes. QuickSave lists every quality the video offers \u2014 including 720p, 1080p, 1440p and 4K when available \u2014 and merges video and audio into a single MP4 automatically."
+      "text": "Yes. QuickSave lists every quality the video offers , including 720p, 1080p, 1440p and 4K when available , and merges video and audio into a single MP4 automatically."
      }
     },
     {
@@ -105,7 +105,7 @@
      "name": "Is it legal to download videos?",
      "acceptedAnswer": {
       "@type": "Answer",
-      "text": "Download only content you own, that is licensed for reuse, or that you have the creator's permission to save, and always respect the terms of the platform you download from."
+      "text": "Download only content you own, that is licensed for reuse, or that you have the creator’s permission to save, and always respect the terms of the platform you download from."
      }
     }
    ]
@@ -129,25 +129,25 @@
 <main>
 
   <section class="hero">
-    <h1>Free Video Downloader — Save Videos from Any Site</h1>
-    <p class="answer"><strong>QuickSave is a free online video downloader.</strong> Paste a link from YouTube, Facebook, Instagram, TikTok, Vimeo or 1,000+ other sites, pick a quality up to HD/4K — or save the audio as MP3 — and the file downloads straight to your device. No sign-up, no software to install, no watermarks.</p>
+    <h1>Free Video Downloader, Save Videos from Any Site</h1>
+    <p class="answer"><strong>QuickSave is a free online video downloader.</strong> Paste a link from YouTube, Facebook, Instagram, TikTok, Vimeo or 1,000+ other sites, pick a quality up to HD/4K, or save the audio as MP3, and the file downloads straight to your device. No sign-up, no software to install, no watermarks.</p>
     <form id="resolve-form" class="fetch-box">
-      <input type="url" id="url-input" placeholder="Paste a video link here — e.g. https://www.youtube.com/watch?v=…" autocomplete="off" spellcheck="false" required>
+      <input type="url" id="url-input" placeholder="Paste a video link here, e.g. https://www.youtube.com/watch?v=…" autocomplete="off" spellcheck="false" required>
       <button type="submit" id="fetch-btn">Download</button>
     </form>
     <div id="status" class="status" hidden></div>
-    <p class="micro">Free · No sign-up · Works on phone &amp; computer · Only download content you have the right to save.</p>
+    <p class="micro">Free, no sign-up, works on phone &amp; computer. Only download content you have the right to save.</p>
   </section>
 
   <section id="result" class="result" hidden>
     <div class="result-card">
-      <img id="r-thumb" alt="Video thumbnail">
+      <img id="r-thumb" src="/download.svg" alt="Video thumbnail" data-slot="video-thumbnail">
       <div class="result-meta">
         <h2 id="r-title"></h2>
-        <p><span id="r-uploader"></span> · <span id="r-duration"></span> · via <span id="r-platform"></span></p>
+        <p><span id="r-uploader"></span>, <span id="r-duration"></span>, via <span id="r-platform"></span></p>
         <div class="quick-actions">
-          <button class="dl-btn best" data-format="best_mp4">⬇ Best quality MP4</button>
-          <button class="dl-btn audio" data-format="mp3">🎵 Audio only (MP3)</button>
+          <button class="dl-btn best" data-format="best_mp4"><svg class="btn-ico" aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v11m0 0 4-4m-4 4-4-4"/><path d="M4 17v2a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-2"/></svg> Best quality MP4</button>
+          <button class="dl-btn audio" data-format="mp3"><svg class="btn-ico" aria-hidden="true" viewBox="0 0 24 24" fill="currentColor"><path d="M9 18.6A3.1 3.1 0 1 1 6.9 15.7V5.4c0-.4.27-.76.66-.86l9-2.3A1 1 0 0 1 17.8 3.2v12.4a3.1 3.1 0 1 1-2-2.87V6L9 7.7v10.9Z"/></svg> Audio only (MP3)</button>
         </div>
       </div>
     </div>
@@ -183,7 +183,7 @@
     <h2>Why people use QuickSave</h2>
     <div class="steps">
       <div class="step"><strong>Completely free</strong><p>No accounts, no quotas, no premium upsells and no watermarks.</p></div>
-      <div class="step"><strong>HD &amp; 4K quality</strong><p>Every quality the source offers — 360p to 4K — with automatic audio merging.</p></div>
+      <div class="step"><strong>HD &amp; 4K quality</strong><p>Every quality the source offers, 360p to 4K, with automatic audio merging.</p></div>
       <div class="step"><strong>1,000+ sites</strong><p>One tool for YouTube, social media, news sites and video hosts worldwide.</p></div>
       <div class="step"><strong>MP3 extraction</strong><p>Save just the soundtrack of any video as a high-quality MP3 file.</p></div>
       <div class="step"><strong>Built-in converter</strong><p>Convert files you already have between MP4, MP3, WEBM, MOV, MKV and GIF.</p></div>
@@ -199,20 +199,20 @@
 
   <section id="faq" class="panel">
     <h2>Frequently asked questions</h2>
-    <details><summary>Is QuickSave free to use?</summary><p>Yes. QuickSave is completely free — no accounts, no sign-up, no download quotas and no watermarks on saved videos.</p></details>
+    <details><summary>Is QuickSave free to use?</summary><p>Yes. QuickSave is completely free, no accounts, no sign-up, no download quotas and no watermarks on saved videos.</p></details>
     <details><summary>Which sites does QuickSave work with?</summary><p>QuickSave works with YouTube, Facebook, Instagram, TikTok, Vimeo, Dailymotion, Reddit, X (Twitter) and more than 1,000 other websites. If a site plays video in a browser, QuickSave can usually save it.</p></details>
-    <details><summary>How do I download a video with QuickSave?</summary><p>Copy the video's link, paste it into the box at the top of this page, press Download, then pick the quality you want. The file is prepared and saved straight to your device.</p></details>
-    <details><summary>Can I download YouTube videos in HD or 4K?</summary><p>Yes. QuickSave lists every quality the video offers — including 720p, 1080p, 1440p and 4K when available — and merges video and audio into a single MP4 automatically.</p></details>
+    <details><summary>How do I download a video with QuickSave?</summary><p>Copy the video’s link, paste it into the box at the top of this page, press Download, then pick the quality you want. The file is prepared and saved straight to your device.</p></details>
+    <details><summary>Can I download YouTube videos in HD or 4K?</summary><p>Yes. QuickSave lists every quality the video offers, including 720p, 1080p, 1440p and 4K when available, and merges video and audio into a single MP4 automatically.</p></details>
     <details><summary>Can I save just the audio as MP3?</summary><p>Yes. After pasting a link, choose “Audio only (MP3)”, or use the dedicated YouTube to MP3 page to extract audio from any supported video.</p></details>
     <details><summary>Does QuickSave work on phones?</summary><p>Yes. QuickSave runs entirely in your browser, so it works on Android, iPhone, tablets and computers with nothing to install.</p></details>
     <details><summary>Why did my download fail?</summary><p>Private, age-restricted or region-locked videos may not be downloadable, and sites occasionally rate-limit requests. Check that the video is public, then try again in a few minutes.</p></details>
-    <details><summary>Is it legal to download videos?</summary><p>Download only content you own, that is licensed for reuse, or that you have the creator's permission to save, and always respect the terms of the platform you download from.</p></details>
+    <details><summary>Is it legal to download videos?</summary><p>Download only content you own, that is licensed for reuse, or that you have the creator’s permission to save, and always respect the terms of the platform you download from.</p></details>
   </section>
 </main>
 <footer>
-  <p><a href="/">Video Downloader</a> · <a href="/youtube-video-downloader/">YouTube</a> · <a href="/facebook-video-downloader/">Facebook</a> · <a href="/instagram-video-downloader/">Instagram</a> · <a href="/tiktok-video-downloader/">TikTok</a> · <a href="/youtube-to-mp3/">YouTube to MP3</a> · <a href="/video-converter/">Converter</a></p>
-  <p><strong>QuickSave</strong> — free online video downloader &amp; converter. No sign-up, no installs.</p>
-  <p>Only download content you own or have permission to save. Respect each platform's terms and creators' rights.</p>
+  <p class="foot-nav"><a href="/">Video Downloader</a> <a href="/youtube-video-downloader/">YouTube</a> <a href="/facebook-video-downloader/">Facebook</a> <a href="/instagram-video-downloader/">Instagram</a> <a href="/tiktok-video-downloader/">TikTok</a> <a href="/youtube-to-mp3/">YouTube to MP3</a> <a href="/video-converter/">Converter</a></p>
+  <p><strong>QuickSave</strong>, free online video downloader &amp; converter. No sign-up, no installs.</p>
+  <p>Only download content you own or have permission to save. Respect each platform’s terms and creators' rights.</p>
   <p>© 2026 QuickSave</p>
 </footer>
 <script src="/app.js"></script>
