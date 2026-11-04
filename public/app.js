@@ -1,6 +1,50 @@
 "use strict";
 const API_BASE = "https://quicksave-tgyk.onrender.com";
 function api(path) { return API_BASE + path; }
+
+// ---- Growth measurement (arena plan, Initiative 1): anonymous session
+// attribution + fire-and-forget page-view context posts to the same-origin
+// Pages Function ingest. Everything is wrapped so a failure here can NEVER
+// break or delay resolving, downloading or converting.
+const QS_SLUG = window.location.pathname || "/";
+let qsSessionId = null, qsReferrerHost = "direct";
+try {
+  qsSessionId = sessionStorage.getItem("qs_session_id");
+  if (!qsSessionId) {
+    qsSessionId = (crypto.randomUUID ? crypto.randomUUID()
+      : "s-" + Date.now() + "-" + Math.random().toString(36).slice(2, 10));
+    sessionStorage.setItem("qs_session_id", qsSessionId);
+  }
+  let ref = sessionStorage.getItem("qs_referrer_host");
+  if (ref === null) {
+    ref = "direct";
+    try {
+      if (document.referrer) {
+        const h = new URL(document.referrer).hostname;
+        if (h && h !== window.location.hostname) ref = h;
+      }
+    } catch (_) {}
+    sessionStorage.setItem("qs_referrer_host", ref);
+  }
+  qsReferrerHost = ref || "direct";
+} catch (_) {}
+function qsAttribution() {
+  return { session_id: qsSessionId, page_slug: QS_SLUG, referrer_host: qsReferrerHost };
+}
+function qsTrack(event, extra) {
+  try {
+    const payload = Object.assign(
+      { event, source: "user", ts: Date.now() / 1000 }, qsAttribution(), extra || {});
+    const body = JSON.stringify(payload);
+    if (navigator.sendBeacon) {
+      navigator.sendBeacon("/api/events", new Blob([body], { type: "application/json" }));
+    } else {
+      fetch("/api/events", { method: "POST", headers: { "Content-Type": "application/json" },
+        body, keepalive: true }).catch(() => {});
+    }
+  } catch (_) {}
+}
+qsTrack("page_view");
 const $ = (s) => document.querySelector(s);
 const form = $("#resolve-form"), input = $("#url-input"), fetchBtn = $("#fetch-btn");
 const statusBox = $("#status"), result = $("#result");
@@ -24,8 +68,15 @@ function fmtSize(bytes) {
   return n.toFixed(n >= 100 ? 0 : 1) + " " + u[i];
 }
 function downloadUrl(formatId) {
-  return api("/api/download?url=" + encodeURIComponent(currentUrl) +
+  let u = api("/api/download?url=" + encodeURIComponent(currentUrl) +
          "&format_id=" + encodeURIComponent(formatId));
+  try {
+    const a = qsAttribution();
+    if (a.session_id) u += "&session_id=" + encodeURIComponent(a.session_id);
+    u += "&page_slug=" + encodeURIComponent(a.page_slug) +
+         "&referrer_host=" + encodeURIComponent(a.referrer_host);
+  } catch (_) {}
+  return u;
 }
 function makeDlButton(label, formatId) {
   const b = document.createElement("button");
@@ -50,7 +101,7 @@ async function resolve(url) {
   try {
     const r = await fetch(api("/api/resolve"), {
       method: "POST", headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ url }),
+      body: JSON.stringify(Object.assign({ url }, qsAttribution())),
     });
     let data = {};
     try { data = await r.json(); } catch (_) { throw new Error("The backend did not answer properly — check the Backend URL in the 'Backend server' section."); }
@@ -134,6 +185,12 @@ convBtn.addEventListener("click", async () => {
   const target = $("#convert-target").value;
   const fd = new FormData();
   fd.append("file", convertFile); fd.append("target", target);
+  try {
+    const a = qsAttribution();
+    if (a.session_id) fd.append("session_id", a.session_id);
+    fd.append("page_slug", a.page_slug);
+    fd.append("referrer_host", a.referrer_host);
+  } catch (_) {}
   convBtn.disabled = true;
   convStatus.hidden = false; convStatus.classList.remove("error");
   convStatus.textContent = "Converting… this can take a while for big files.";
