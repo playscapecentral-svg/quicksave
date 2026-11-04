@@ -113,12 +113,31 @@ async function resolve(url) {
     $("#r-platform").textContent = data.platform || "web";
     const vg = $("#formats-video"), ag = $("#formats-audio");
     vg.innerHTML = ""; ag.innerHTML = "";
+    // TikTok only (arena plan, Initiative 2): the play-stream format the
+    // Day-4 gate verified watermark-free — a bytevc1_*/h264_* format_id
+    // ending in "-0", highest resolution — is labelled "MP4 — no watermark"
+    // and rendered as the first button. No other platform gets this label.
+    let isTikTok = /tiktok/i.test(data.platform || "");
+    if (!isTikTok) {
+      try { isTikTok = /(^|\.)tiktok\.com$/i.test(new URL(url).hostname); } catch (_) {}
+    }
+    let ttPick = null;
+    if (isTikTok) {
+      for (const f of data.formats) {
+        if (f.has_video && /^(bytevc1|h264)_.*-0$/.test(f.format_id || "") &&
+            (!ttPick || (f.height || 0) > (ttPick.height || 0))) ttPick = f;
+      }
+    }
     let vCount = 0, aCount = 0;
     for (const f of data.formats) {
       const quality = f.has_video ? (f.height ? f.height + "p" : f.resolution) : (f.note || "audio");
-      const label = `${quality} · ${f.ext}${f.fps ? " · " + f.fps + "fps" : ""} · ${fmtSize(f.filesize_approx)}${f.has_video && !f.has_audio ? " (merges audio)" : ""}`;
+      const label = f === ttPick ? "MP4 — no watermark"
+        : `${quality} · ${f.ext}${f.fps ? " · " + f.fps + "fps" : ""} · ${fmtSize(f.filesize_approx)}${f.has_video && !f.has_audio ? " (merges audio)" : ""}`;
       const btn = makeDlButton(label, f.format_id);
-      if (f.has_video) { vg.appendChild(btn); vCount++; } else { ag.appendChild(btn); aCount++; }
+      if (f.has_video) {
+        if (f === ttPick) vg.prepend(btn); else vg.appendChild(btn);
+        vCount++;
+      } else { ag.appendChild(btn); aCount++; }
     }
     if (!vCount) vg.innerHTML = "<p>No separate video formats — use Best quality MP4 above.</p>";
     if (!aCount) ag.innerHTML = "<p>No audio-only formats — use Audio only (MP3) above.</p>";
